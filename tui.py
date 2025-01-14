@@ -22,14 +22,19 @@ class TUI:
         print(f'{line}\n{title}\n{line}')
 
     @staticmethod
-    def print_options(options: Dict[str, str], indent: int = 0) -> None:
+    def print_options(options: Dict[str, str] | List[Tuple[str, str]], indent: int = 0) -> None:
         if indent < 0:
             raise ValueError('Indent value must be greater than 0!')
-        for k, v in options.items():
-            print(f'{'\t' * indent}[{k}] {v}')
+
+        if not isinstance(options, dict):
+            for k, v in options:
+                print(f'{'\t' * indent}[{k}] {v}')
+        else:
+            for k, v in options.items():
+                print(f'{'\t' * indent}[{k}] {v}')
 
     @staticmethod
-    def print_menu(message: str, options: Dict[str, str], indent: int = 0) -> None:
+    def print_menu(message: str, options: Dict[str, str] | List[Tuple[str, str]], indent: int = 0) -> None:
         print(message)
         TUI.print_options(options, indent)
 
@@ -44,8 +49,11 @@ class TUI:
             return i
 
     @staticmethod
-    def print_confirmed_option(option: Tuple[str]):
-        print(f'You have chosen option {option[0]} - {option[1]}')
+    def print_confirmed_option(option: Tuple[str] | str):
+        if isinstance(option, str):
+            print(f'You have chosen option - {option}')
+        else:
+            print(f'You have chosen option {option[0]} - {option[1]}')
 
     @staticmethod
     def print_reviews(reviews: List[Review]) -> None:
