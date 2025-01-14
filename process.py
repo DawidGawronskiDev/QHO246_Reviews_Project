@@ -4,6 +4,14 @@ perfrom necessary processes in order to provide the desired result in the desire
 It is likely that most sections will require functions to be placed in this module.
 """
 
+class Review:
+    def __init__(self, review_id: int, rating: int, year_month: str, reviewer_location: str, branch: str):
+        self.review_id = review_id
+        self.rating = rating
+        self.year_month = year_month
+        self.reviewer_location = reviewer_location
+        self.branch = branch
+
 class Process:
     def __init__(self):
         pass
