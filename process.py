@@ -7,6 +7,7 @@ It is likely that most sections will require functions to be placed in this modu
 import csv
 from typing import List
 
+
 class Review:
     def __init__(self, review_id: int, rating: int, year_month: str, reviewer_location: str, branch: str):
         self.review_id = review_id
@@ -15,13 +16,14 @@ class Review:
         self.reviewer_location = reviewer_location
         self.branch = branch
 
+
 class Process:
     def __init__(self):
         pass
 
     @staticmethod
     def read_reviews(file_path: str) -> List[Review]:
-        print('Loading...')
+        print('Loading reviews...')
         with open(file_path) as f:
             csvreader = csv.reader(f)
             csvreader.__next__()
