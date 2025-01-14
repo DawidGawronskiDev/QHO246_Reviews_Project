@@ -27,6 +27,7 @@ class Controller:
             self.main_menu()
 
     def main_menu(self):
+        message = 'Please enter the letter which corresponds with your desired menu choice:'
         options = Process.create_options([
             'View Data',
             'Visualise Data'
@@ -40,7 +41,7 @@ class Controller:
         }
 
         while True:
-            TUI.print_menu(options, 1)
+            TUI.print_menu(message, options, 1)
             choice = TUI.handle_input()
 
             if choice:
@@ -54,6 +55,7 @@ class Controller:
                     print('Input does not correspond with any option!', end=' ')
 
     def a_submenu(self):
+        message = 'Please enter one of the following options:'
         options = Process.create_options([
             'View Reviews by Park',
             'Number of Reviews by Park and Reviewer Location',
@@ -69,7 +71,7 @@ class Controller:
         }
 
         while True:
-            TUI.print_menu(options, 2)
+            TUI.print_menu(message, options, 2)
             choice = TUI.handle_input()
 
             if choice:
@@ -81,6 +83,9 @@ class Controller:
                         break
                 else:
                     print('Input does not correspond with any option!', end=' ')
+
+    def b_submenu(self):
+        pass
 
 
 if __name__ == '__main__':

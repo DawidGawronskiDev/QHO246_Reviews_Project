@@ -28,8 +28,7 @@ class TUI:
             print(f'{'\t' * indent}[{k}] {v}')
 
     @staticmethod
-    def print_menu(options: Dict[str, str], indent: int = 0) -> None:
-        message = 'Please enter the letter which corresponds with your desired menu choice:'
+    def print_menu(message: str, options: Dict[str, str], indent: int = 0) -> None:
         print(message)
         TUI.print_options(options, indent)
 
