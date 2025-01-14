@@ -36,7 +36,7 @@ class Controller:
 
         actions = {
             'A': lambda: self.a_submenu(),
-            'B': lambda: print(2),
+            'B': lambda: self.b_submenu(),
             'X': lambda: exit()
         }
 
@@ -85,7 +85,34 @@ class Controller:
                     print('Input does not correspond with any option!', end=' ')
 
     def b_submenu(self):
-        pass
+        message = 'Please enter one of the following options:'
+        options = Process.create_options([
+            'Most Reviewed Parks',
+            'Average Scores',
+            'Park Ranking by Nationality',
+            'Most Popular Month by Park'
+        ])
+
+        actions = {
+            'A': lambda: print(1),
+            'B': lambda: print(2),
+            'C': lambda: print(3),
+            'D': lambda: print(4)
+        }
+
+        while True:
+            TUI.print_menu(message, options, 2)
+            choice = TUI.handle_input()
+
+            if choice:
+                choice = choice.upper()
+                if choice in actions:
+                    TUI.print_confirmed_option((choice, options[choice]))
+                    actions[choice]()
+                    if choice in options.keys():
+                        break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
 
 
 if __name__ == '__main__':
