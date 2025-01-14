@@ -70,3 +70,7 @@ class Process:
         for i, item in enumerate(items):
             options[chr(i + 65)] = item
         return options
+
+    @staticmethod
+    def trans_str(s: str) -> str:
+        return ''.join(s.lower().split()).replace('_', '')
