@@ -10,6 +10,8 @@ Note:   any user input/output should be done in the module 'tui'
 
 from typing import List
 from process import Process, Review
+from tui import TUI
+
 
 class Controller:
     def __init__(self):
@@ -18,7 +20,9 @@ class Controller:
         self.start()
 
     def start(self):
+        TUI.print_title()
         self.reviews = Process.read_reviews('data/disneyland_reviews.csv')
+
 
 if __name__ == '__main__':
     Controller()
