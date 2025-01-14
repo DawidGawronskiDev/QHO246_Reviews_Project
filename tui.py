@@ -7,7 +7,8 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
-from typing import Dict, Tuple
+from process import Review
+from typing import Dict, List, Tuple
 
 
 class TUI:
@@ -45,3 +46,8 @@ class TUI:
     @staticmethod
     def print_confirmed_option(option: Tuple[str]):
         print(f'You have chosen option {option[0]} - {option[1]}')
+
+    @staticmethod
+    def print_reviews(reviews: List[Review]) -> None:
+        for review in reviews:
+            print(review)
