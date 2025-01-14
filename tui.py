@@ -32,3 +32,13 @@ class TUI:
         message = 'Please enter the letter which corresponds with your desired menu choice:'
         print(message)
         TUI.print_options(options, indent)
+
+    @staticmethod
+    def handle_input():
+        i = str(input()).strip()
+
+        if len(i) == 0:
+            print("Input cannot be empty!", end=' ')
+            return
+        else:
+            return i
