@@ -42,6 +42,14 @@ class Process:
         return reviews
 
     @staticmethod
+    def get_branches(reviews: List[Review]) -> List[str]:
+        branches = []
+        for review in reviews:
+            if review.branch not in branches:
+                branches.append(review.branch)
+        return branches
+
+    @staticmethod
     def create_options(items: List[str]) -> Dict[str, str]:
         """
             Generates dictionary that maps items to English alphabet letters (A-Z).
