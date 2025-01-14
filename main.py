@@ -34,13 +34,13 @@ class Controller:
         options['X'] = 'Exit'
 
         actions = {
-            'A': lambda: print(1),
+            'A': lambda: self.a_submenu(),
             'B': lambda: print(2),
             'X': lambda: exit()
         }
 
         while True:
-            TUI.print_main_menu(options, 1)
+            TUI.print_menu(options, 1)
             choice = TUI.handle_input()
 
             if choice:
@@ -49,6 +49,35 @@ class Controller:
                     TUI.print_confirmed_option((choice, options[choice]))
                     actions[choice]()
                     if choice in ['A', 'B']:
+                        break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
+
+    def a_submenu(self):
+        options = Process.create_options([
+            'View Reviews by Park',
+            'Number of Reviews by Park and Reviewer Location',
+            'Average Score per year by Park',
+            'Average Score per Park by Reviewer Location'
+        ])
+
+        actions = {
+            'A': lambda: print(1),
+            'B': lambda: print(2),
+            'C': lambda: print(3),
+            'D': lambda: print(4)
+        }
+
+        while True:
+            TUI.print_menu(options, 2)
+            choice = TUI.handle_input()
+
+            if choice:
+                choice = choice.upper()
+                if choice in actions:
+                    TUI.print_confirmed_option((choice, options[choice]))
+                    actions[choice]()
+                    if choice in options.keys():
                         break
                 else:
                     print('Input does not correspond with any option!', end=' ')
