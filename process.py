@@ -49,6 +49,13 @@ class Process:
                 branches.append(review.branch)
         return branches
 
+    def get_reviewers_locations(reviews: List[Review]) -> List[str]:
+        locations = []
+        for review in reviews:
+            if review.reviewer_location not in locations:
+                locations.append(review.reviewer_location)
+        return locations
+
     @staticmethod
     def get_branch_reviews(branch: str, reviews: List[Review]) -> List[Review]:
         return [review for review in reviews if
