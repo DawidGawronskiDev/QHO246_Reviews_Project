@@ -7,6 +7,8 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
+from typing import Dict
+
 
 class TUI:
     def __init__(self):
@@ -17,3 +19,11 @@ class TUI:
         title = 'Disneyland Reviews Analyser'
         line = '*' * len(title)
         print(f'{line}\n{title}\n{line}')
+
+    @staticmethod
+    def print_main_menu(options: Dict[str, str]) -> None:
+        message = 'Please enter the letter which corresponds with your desired menu choice:'
+
+        print(message)
+        for k, v in options.items():
+            print(f'\t[{k}] {v}')
