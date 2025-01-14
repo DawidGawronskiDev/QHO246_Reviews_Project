@@ -23,6 +23,30 @@ class Controller:
         TUI.print_title()
         self.reviews = Process.read_reviews('data/disneyland_reviews.csv')
 
+        while True:
+            self.main_menu()
+
+    def main_menu(self):
+        options = Process.create_options([
+            'View Data',
+            'Visualise Data'
+        ])
+        options['X'] = 'Exit'
+
+        while True:
+            TUI.print_main_menu(options, 1)
+            choice = TUI.handle_input()
+
+            if choice and choice.upper() in options:
+                if choice == 'A':
+                    print(1)
+                    break
+                if choice == 'B':
+                    print(2)
+                    break
+                if choice == 'X':
+                    exit()
+
 
 if __name__ == '__main__':
     Controller()
