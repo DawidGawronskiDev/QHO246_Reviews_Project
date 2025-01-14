@@ -7,7 +7,7 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
-from typing import Dict
+from typing import Dict, Tuple
 
 
 class TUI:
@@ -42,3 +42,7 @@ class TUI:
             return
         else:
             return i
+
+    @staticmethod
+    def print_confirmed_option(option: Tuple[str]):
+        print(f'You have chosen option {option[0]} - {option[1]}')
