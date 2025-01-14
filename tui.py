@@ -21,9 +21,14 @@ class TUI:
         print(f'{line}\n{title}\n{line}')
 
     @staticmethod
-    def print_main_menu(options: Dict[str, str]) -> None:
-        message = 'Please enter the letter which corresponds with your desired menu choice:'
-
-        print(message)
+    def print_options(options: Dict[str, str], indent: int = 0) -> None:
+        if indent < 0:
+            raise ValueError('Indent value must be greater than 0!')
         for k, v in options.items():
-            print(f'\t[{k}] {v}')
+            print(f'{'\t' * indent}[{k}] {v}')
+
+    @staticmethod
+    def print_main_menu(options: Dict[str, str], indent: int = 0) -> None:
+        message = 'Please enter the letter which corresponds with your desired menu choice:'
+        print(message)
+        TUI.print_options(options, indent)
