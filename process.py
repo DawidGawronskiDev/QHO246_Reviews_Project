@@ -16,6 +16,13 @@ class Review:
         self.reviewer_location = reviewer_location
         self.branch = branch
 
+    def __str__(self):
+        return (f'Review ID: {self.review_id}. '
+                f'Rating: {self.rating}. '
+                f'Date: {self.year_month}. '
+                f'Reviewer Location: {self.reviewer_location}. '
+                f'Branch: {self.branch.replace('_', ' ')}')
+
 
 class Process:
     def __init__(self):
