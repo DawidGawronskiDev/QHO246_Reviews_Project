@@ -33,19 +33,25 @@ class Controller:
         ])
         options['X'] = 'Exit'
 
+        actions = {
+            'A': lambda: print(1),
+            'B': lambda: print(2),
+            'X': lambda: exit()
+        }
+
         while True:
             TUI.print_main_menu(options, 1)
             choice = TUI.handle_input()
 
-            if choice and choice.upper() in options:
-                if choice == 'A':
-                    print(1)
-                    break
-                if choice == 'B':
-                    print(2)
-                    break
-                if choice == 'X':
-                    exit()
+            if choice:
+                choice = choice.upper()
+                if choice in actions:
+                    TUI.print_confirmed_option((choice, options[choice]))
+                    actions[choice]()
+                    if choice in ['A', 'B']:
+                        break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
 
 
 if __name__ == '__main__':
