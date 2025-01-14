@@ -50,6 +50,11 @@ class Process:
         return branches
 
     @staticmethod
+    def get_branch_reviews(branch: str, reviews: List[Review]) -> List[Review]:
+        return [review for review in reviews if
+                Process.trans_str(review.branch) == Process.trans_str(branch)]
+
+    @staticmethod
     def create_options(items: List[str]) -> Dict[str, str]:
         """
             Generates dictionary that maps items to English alphabet letters (A-Z).
