@@ -16,12 +16,14 @@ from tui import TUI
 class Controller:
     def __init__(self):
         self.reviews: List[Review] = []
+        self.branches: List[str] = []
 
         self.start()
 
     def start(self):
         TUI.print_title()
         self.reviews = Process.read_reviews('data/disneyland_reviews.csv')
+        self.branches = Process.get_branches(self.reviews)
 
         while True:
             self.main_menu()
@@ -64,7 +66,7 @@ class Controller:
         ])
 
         actions = {
-            'A': lambda: print(1),
+            'A': lambda: self.a_submenu_a(),
             'B': lambda: print(2),
             'C': lambda: print(3),
             'D': lambda: print(4)
@@ -81,6 +83,23 @@ class Controller:
                     actions[choice]()
                     if choice in options.keys():
                         break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
+
+    def a_submenu_a(self):
+        message = 'For which branch would you like to see reviews?'
+        options = Process.create_options([branch.replace('_', ' ') for branch in self.branches])
+
+        while True:
+            TUI.print_menu(message, options, 3)
+            choice = TUI.handle_input()
+
+            if choice:
+                choice = choice.upper()
+                if choice in options:
+                    TUI.print_confirmed_option((choice, options[choice]))
+                    TUI.print_reviews(Process.get_branch_reviews(options[choice], self.reviews))
+                    break
                 else:
                     print('Input does not correspond with any option!', end=' ')
 
