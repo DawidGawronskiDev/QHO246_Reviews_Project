@@ -4,4 +4,6 @@ perfrom necessary processes in order to provide the desired result in the desire
 It is likely that most sections will require functions to be placed in this module.
 """
 
-
+class Process:
+    def __init__(self):
+        pass
