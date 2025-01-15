@@ -17,6 +17,7 @@ class Controller:
     def __init__(self):
         self.reviews: List[Review] = []
         self.branches: List[str] = []
+        self.reviewers_locations: List[str] = []
 
         self.start()
 
@@ -24,6 +25,7 @@ class Controller:
         TUI.print_title()
         self.reviews = Process.read_reviews('data/disneyland_reviews.csv')
         self.branches = Process.get_branches(self.reviews)
+        self.reviewers_locations = Process.get_reviewers_locations(self.reviews)
 
         while True:
             self.main_menu()
@@ -67,7 +69,7 @@ class Controller:
 
         actions = {
             'A': lambda: self.a_submenu_a(),
-            'B': lambda: print(2),
+            'B': lambda: self.a_submenu_b(),
             'C': lambda: print(3),
             'D': lambda: print(4)
         }
@@ -102,6 +104,43 @@ class Controller:
                     break
                 else:
                     print('Input does not correspond with any option!', end=' ')
+
+    def a_submenu_b(self):
+        branch_message = 'For which branch would you like to see number of reviews?'
+        branch_options = Process.create_options([branch.replace('_', ' ') for branch in self.branches])
+        location_message = 'For which reviewer location would you like to see number of reviews?'
+        location_options = [('-', location) for location in Process.get_reviewers_locations(self.reviews)]
+
+        while True:
+            TUI.print_menu(branch_message, branch_options, 3)
+            branch_name = TUI.handle_input()
+
+            if branch_name:
+                branch_name = branch_name.upper()
+                if branch_name in branch_options:
+                    TUI.print_confirmed_option((branch_name, branch_options[branch_name]))
+                    branch = branch_options[branch_name]
+                    break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
+
+        while True:
+            TUI.print_menu(location_message, location_options, 3)
+            chosen_location = TUI.handle_input()
+
+            if chosen_location:
+                if chosen_location in self.reviewers_locations:
+                    TUI.print_confirmed_option(chosen_location)
+                    location = chosen_location
+                    break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
+
+        print(TUI.print_reviews_count(
+            branch,
+            location,
+            Process.filter_reviews(self.reviews, {'branch': branch, 'reviewer_location': location})
+        ))
 
     def b_submenu(self):
         message = 'Please enter one of the following options:'
