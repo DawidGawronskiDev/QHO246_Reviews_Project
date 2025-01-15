@@ -22,13 +22,13 @@ class TUI:
         print(f'{line}\n{title}\n{line}')
 
     @staticmethod
-    def print_options(options: Dict[str, str] | List[Tuple[str, str]], indent: int = 0) -> None:
+    def print_options(options: Dict[str, str] | List[str], indent: int = 0) -> None:
         if indent < 0:
             raise ValueError('Indent value must be greater than 0!')
 
         if not isinstance(options, dict):
-            for k, v in options:
-                print(f'{'\t' * indent}{k} {v.replace('_', ' ')}')
+            for v in options:
+                print(f'{'\t' * indent}- {v.replace('_', ' ')}')
         else:
             for k, v in options.items():
                 print(f'{'\t' * indent}[{k}] {v.replace('_', ' ')}')
@@ -76,6 +76,21 @@ class TUI:
                 choice = choice.upper()
                 if choice in branch_options:
                     choice = branch_options[choice]
+                    break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
+        return choice
+
+    @staticmethod
+    def validate_multi_choice(msg: str, options: List[str]) -> str:
+        while True:
+            TUI.print_options(options, 3)
+            TUI.print_message(msg)
+            choice = TUI.handle_input()
+
+            if choice:
+                if choice in options:
+                    TUI.print_confirmed_option(choice)
                     break
                 else:
                     print('Input does not correspond with any option!', end=' ')

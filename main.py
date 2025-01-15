@@ -97,25 +97,15 @@ class Controller:
         TUI.print_reviews(Process.get_branch_reviews(branch, self.reviews))
 
     def a_submenu_b(self):
-        location_options = [('-', location) for location in Process.get_reviewers_locations(self.reviews)]
-
         branch = TUI.validate_branch(
             'For which reviewer location would you like to see number of reviews?',
             self.branches
         )
 
-        while True:
-            TUI.print_message('For which reviewer location would you like to see number of reviews?')
-            TUI.print_options(location_options, 3)
-            chosen_location = TUI.handle_input()
-
-            if chosen_location:
-                if chosen_location in self.reviewers_locations:
-                    TUI.print_confirmed_option(chosen_location)
-                    location = chosen_location
-                    break
-                else:
-                    print('Input does not correspond with any option!', end=' ')
+        location = TUI.validate_multi_choice(
+            'For which reviewer location would you like to see number of reviews?',
+            Process.get_reviewers_locations(self.reviews)
+        )
 
         print(TUI.print_reviews_count(
             branch,
