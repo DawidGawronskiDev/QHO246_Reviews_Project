@@ -28,7 +28,7 @@ class TUI:
 
         if not isinstance(options, dict):
             for k, v in options:
-                print(f'{'\t' * indent}[{k}] {v}')
+                print(f'{'\t' * indent}{k} {v}')
         else:
             for k, v in options.items():
                 print(f'{'\t' * indent}[{k}] {v}')
