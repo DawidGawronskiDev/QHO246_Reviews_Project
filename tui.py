@@ -59,3 +59,7 @@ class TUI:
     def print_reviews(reviews: List[Review]) -> None:
         for review in reviews:
             print(review)
+
+    @staticmethod
+    def print_reviews_count(branch: str, loc: str, reviews: List[Review]) -> None:
+        print(f'There are {len(reviews)} reviews from reviewers from {loc} for {branch} branch.')
