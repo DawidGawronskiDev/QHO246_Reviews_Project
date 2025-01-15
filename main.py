@@ -45,7 +45,8 @@ class Controller:
         }
 
         while True:
-            TUI.print_menu(message, options, 1)
+            TUI.print_message(message)
+            TUI.print_options(options, 1)
             choice = TUI.handle_input()
 
             if choice:
@@ -75,7 +76,8 @@ class Controller:
         }
 
         while True:
-            TUI.print_menu(message, options, 2)
+            TUI.print_message(message)
+            TUI.print_options(options, 2)
             choice = TUI.handle_input()
 
             if choice:
@@ -93,7 +95,8 @@ class Controller:
         options = Process.create_options([branch.replace('_', ' ') for branch in self.branches])
 
         while True:
-            TUI.print_menu(message, options, 3)
+            TUI.print_message(message)
+            TUI.print_options(options, 3)
             choice = TUI.handle_input()
 
             if choice:
@@ -106,13 +109,12 @@ class Controller:
                     print('Input does not correspond with any option!', end=' ')
 
     def a_submenu_b(self):
-        branch_message = 'For which branch would you like to see number of reviews?'
         branch_options = Process.create_options([branch.replace('_', ' ') for branch in self.branches])
-        location_message = 'For which reviewer location would you like to see number of reviews?'
         location_options = [('-', location) for location in Process.get_reviewers_locations(self.reviews)]
 
         while True:
-            TUI.print_menu(branch_message, branch_options, 3)
+            TUI.print_message('For which branch would you like to see number of reviews?')
+            TUI.print_options(branch_options, 3)
             branch_name = TUI.handle_input()
 
             if branch_name:
@@ -125,7 +127,8 @@ class Controller:
                     print('Input does not correspond with any option!', end=' ')
 
         while True:
-            TUI.print_menu(location_message, location_options, 3)
+            TUI.print_message('For which reviewer location would you like to see number of reviews?')
+            TUI.print_options(location_options, 3)
             chosen_location = TUI.handle_input()
 
             if chosen_location:

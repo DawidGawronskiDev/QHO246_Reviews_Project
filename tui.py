@@ -34,9 +34,8 @@ class TUI:
                 print(f'{'\t' * indent}[{k}] {v}')
 
     @staticmethod
-    def print_menu(message: str, options: Dict[str, str] | List[Tuple[str, str]], indent: int = 0) -> None:
+    def print_message(message: str) -> None:
         print(message)
-        TUI.print_options(options, indent)
 
     @staticmethod
     def handle_input():
