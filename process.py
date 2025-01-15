@@ -5,7 +5,7 @@ It is likely that most sections will require functions to be placed in this modu
 """
 
 import csv
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 
 class Review:
@@ -86,3 +86,13 @@ class Process:
     @staticmethod
     def trans_str(s: str) -> str:
         return ''.join(s.lower().split()).replace('_', '')
+
+    @staticmethod
+    def filter_reviews(reviews: List[Review], filters: Dict[str, str]) -> List[Review]:
+        filtered_reviews = []
+
+        for review in reviews:
+            if all(Process.trans_str(vars(review)[k]) == Process.trans_str(v) for k, v in filters.items()):
+                filtered_reviews.append(review)
+
+        return filtered_reviews
