@@ -107,11 +107,11 @@ class Controller:
             Process.get_reviewers_locations(self.reviews)
         )
 
-        print(TUI.print_reviews_count(
+        TUI.print_reviews_count(
             branch,
             location,
             Process.filter_reviews(self.reviews, {'branch': branch, 'reviewer_location': location})
-        ))
+        )
 
     def b_submenu(self):
         message = 'Please enter one of the following options:'
