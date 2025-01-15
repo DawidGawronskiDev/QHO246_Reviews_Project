@@ -18,7 +18,7 @@ class TUI:
     @staticmethod
     def print_title() -> None:
         title = 'Disneyland Reviews Analyser'
-        line = '*' * len(title)
+        line = '-' * len(title)
         print(f'{line}\n{title}\n{line}')
 
     @staticmethod
