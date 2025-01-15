@@ -91,40 +91,18 @@ class Controller:
                     print('Input does not correspond with any option!', end=' ')
 
     def a_submenu_a(self):
-        message = 'For which branch would you like to see reviews?'
-        options = Process.create_options([branch.replace('_', ' ') for branch in self.branches])
-
-        while True:
-            TUI.print_message(message)
-            TUI.print_options(options, 3)
-            choice = TUI.handle_input()
-
-            if choice:
-                choice = choice.upper()
-                if choice in options:
-                    TUI.print_confirmed_option((choice, options[choice]))
-                    TUI.print_reviews(Process.get_branch_reviews(options[choice], self.reviews))
-                    break
-                else:
-                    print('Input does not correspond with any option!', end=' ')
+        branch = TUI.validate_branch(
+            'For which branch would you like to see reviews?',
+            self.branches)
+        TUI.print_reviews(Process.get_branch_reviews(branch, self.reviews))
 
     def a_submenu_b(self):
-        branch_options = Process.create_options([branch.replace('_', ' ') for branch in self.branches])
         location_options = [('-', location) for location in Process.get_reviewers_locations(self.reviews)]
 
-        while True:
-            TUI.print_message('For which branch would you like to see number of reviews?')
-            TUI.print_options(branch_options, 3)
-            branch_name = TUI.handle_input()
-
-            if branch_name:
-                branch_name = branch_name.upper()
-                if branch_name in branch_options:
-                    TUI.print_confirmed_option((branch_name, branch_options[branch_name]))
-                    branch = branch_options[branch_name]
-                    break
-                else:
-                    print('Input does not correspond with any option!', end=' ')
+        branch = TUI.validate_branch(
+            'For which reviewer location would you like to see number of reviews?',
+            self.branches
+        )
 
         while True:
             TUI.print_message('For which reviewer location would you like to see number of reviews?')
@@ -162,7 +140,8 @@ class Controller:
         }
 
         while True:
-            TUI.print_menu(message, options, 2)
+            TUI.print_message(message)
+            TUI.print_options(options, 2)
             choice = TUI.handle_input()
 
             if choice:

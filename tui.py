@@ -7,7 +7,7 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
-from process import Review
+from process import Process, Review
 from typing import Dict, List, Tuple
 
 
@@ -28,10 +28,10 @@ class TUI:
 
         if not isinstance(options, dict):
             for k, v in options:
-                print(f'{'\t' * indent}{k} {v}')
+                print(f'{'\t' * indent}{k} {v.replace('_', ' ')}')
         else:
             for k, v in options.items():
-                print(f'{'\t' * indent}[{k}] {v}')
+                print(f'{'\t' * indent}[{k}] {v.replace('_', ' ')}')
 
     @staticmethod
     def print_message(message: str) -> None:
@@ -62,3 +62,23 @@ class TUI:
     @staticmethod
     def print_reviews_count(branch: str, loc: str, reviews: List[Review]) -> None:
         print(f'There are {len(reviews)} reviews from reviewers from {loc} for {branch} branch.')
+
+    @staticmethod
+    def validate_branch(msg: str, branches: List[str]) -> str:
+        branch_options = Process.create_options(branches)
+
+        while True:
+            TUI.print_message(msg)
+            TUI.print_options(branch_options, 3)
+            choice = TUI.handle_input()
+
+            if choice:
+                choice = choice.upper()
+                if choice in branch_options:
+                    choice = branch_options[choice]
+                    break
+                else:
+                    print('Input does not correspond with any option!', end=' ')
+
+        print(choice, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', branches, branch_options)
+        return choice
