@@ -79,6 +79,4 @@ class TUI:
                     break
                 else:
                     print('Input does not correspond with any option!', end=' ')
-
-        print(choice, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', branches, branch_options)
         return choice
