@@ -71,7 +71,7 @@ class Controller:
         actions = {
             'A': lambda: self.a_submenu_a(),
             'B': lambda: self.a_submenu_b(),
-            'C': lambda: print(3),
+            'C': lambda: self.a_submenu_c(),
             'D': lambda: print(4)
         }
 
@@ -112,6 +112,20 @@ class Controller:
             location,
             Process.filter_reviews(self.reviews, {'branch': branch, 'reviewer_location': location})
         )
+
+    def a_submenu_c(self):
+        branch = TUI.validate_branch(
+            'Select one of the following branches: ',
+            self.branches
+        )
+        year = TUI.validate_multi_choice('Select one of the following years:',
+                                         Process.get_reviews_years(branch, self.reviews))
+
+        TUI.print_message(
+            f'The average rating for {branch.replace('_', ' ')} branch in year {year} is {
+            Process.get_avg_rating(
+                Process.filter_reviews(self.reviews, {'branch': branch, 'year': year})
+            )}')
 
     def b_submenu(self):
         message = 'Please enter one of the following options:'
