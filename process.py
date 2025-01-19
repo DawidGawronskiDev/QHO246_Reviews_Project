@@ -96,3 +96,15 @@ class Process:
                 filtered_reviews.append(review)
 
         return filtered_reviews
+
+    @staticmethod
+    def get_reviews_years(branch: str, reviews: List[Review]):
+        filtered_reviews = Process.filter_reviews(reviews, {'branch': branch})
+
+        years = []
+        for review in filtered_reviews:
+            year = review.year_month.split('-')[0]
+            if year not in years:
+                years.append(year)
+
+        return sorted(years)
