@@ -92,7 +92,11 @@ class Process:
         filtered_reviews = []
 
         for review in reviews:
-            if all(Process.trans_str(vars(review)[k]) == Process.trans_str(v) for k, v in filters.items()):
+            if 'year' in filters:
+                if not review.year_month.startswith(filters['year']):
+                    continue
+            if all(Process.trans_str(vars(review)[k]) == Process.trans_str(v) for k, v in filters.items() if
+                   k != 'year'):
                 filtered_reviews.append(review)
 
         return filtered_reviews
@@ -108,3 +112,10 @@ class Process:
                 years.append(year)
 
         return sorted(years)
+
+    @staticmethod
+    def get_avg_rating(reviews: List[Review]) -> float:
+        if len(reviews) <= 0:
+            return 0
+
+        return round(sum([review.rating for review in reviews]) / len(reviews), 1)
