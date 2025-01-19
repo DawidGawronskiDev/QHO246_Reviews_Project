@@ -76,6 +76,7 @@ class TUI:
                 choice = choice.upper()
                 if choice in branch_options:
                     choice = branch_options[choice]
+                    TUI.print_confirmed_option(choice.replace('_', ' '))
                     break
                 else:
                     print('Input does not correspond with any option!', end=' ')
