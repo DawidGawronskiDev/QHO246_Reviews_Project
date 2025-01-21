@@ -7,7 +7,8 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
-from process import Process, Review
+from exporter import Review
+from process import Process
 from typing import Dict, List, Tuple
 
 
@@ -61,7 +62,7 @@ class TUI:
 
     @staticmethod
     def print_reviews_count(branch: str, loc: str, reviews: List[Review]) -> None:
-        print(f'There are {len(reviews)} reviews from reviewers from {loc} for {branch} branch.')
+        print(f'There are {len(reviews)} reviews from reviewers from {loc} for {branch.replace('_', ' ')} branch.')
 
     @staticmethod
     def validate_branch(msg: str, branches: List[str]) -> str:

@@ -5,23 +5,8 @@ It is likely that most sections will require functions to be placed in this modu
 """
 
 import csv
-from typing import List, Dict, Tuple
-
-
-class Review:
-    def __init__(self, review_id: int, rating: int, year_month: str, reviewer_location: str, branch: str):
-        self.review_id = review_id
-        self.rating = rating
-        self.year_month = year_month
-        self.reviewer_location = reviewer_location
-        self.branch = branch
-
-    def __str__(self):
-        return (f'Review ID: {self.review_id}. '
-                f'Rating: {self.rating}. '
-                f'Date: {self.year_month}. '
-                f'Reviewer Location: {self.reviewer_location}. '
-                f'Branch: {self.branch.replace('_', ' ')}')
+from exporter import Review
+from typing import List, Dict
 
 
 class Process:

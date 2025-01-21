@@ -9,7 +9,8 @@ Note:   any user input/output should be done in the module 'tui'
 """
 
 from typing import List
-from process import Process, Review
+from exporter import Review
+from process import Process
 from tui import TUI
 
 
@@ -72,7 +73,7 @@ class Controller:
             'A': lambda: self.a_submenu_a(),
             'B': lambda: self.a_submenu_b(),
             'C': lambda: self.a_submenu_c(),
-            'D': lambda: print(4)
+            'D': lambda: self.a_submenu_d()
         }
 
         while True:
@@ -126,6 +127,29 @@ class Controller:
             Process.get_avg_rating(
                 Process.filter_reviews(self.reviews, {'branch': branch, 'year': year})
             )}')
+
+    def a_submenu_d(self):
+        """
+            This code must be refactored
+        """
+        branches = {}
+        for review in self.reviews:
+            if review.branch not in branches:
+                branches[review.branch] = {}
+            else:
+                if review.reviewer_location not in branches[review.branch]:
+                    branches[review.branch][review.reviewer_location] = [0, 0]  # sum rating & reviews count
+                else:
+                    branches[review.branch][review.reviewer_location][0] += review.rating
+                    branches[review.branch][review.reviewer_location][1] += 1
+
+        for branch_name, locations in branches.items():
+            print(branch_name)
+            for location, score in locations.items():
+                if score[1] != 0:
+                    print(location, round(score[0] / score[1], 1))
+                else:
+                    print(location, 0)
 
     def b_submenu(self):
         message = 'Please enter one of the following options:'
