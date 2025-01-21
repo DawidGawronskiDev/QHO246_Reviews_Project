@@ -128,3 +128,26 @@ class Process:
 
         return {k: round(v['sum_reviews'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in
                 list(avg_ratings.items())}
+
+    @staticmethod
+    def get_top_branch_locations(branch: str, reviews: List[Review], limit: int = None):
+        filtered_reviews = Process.filter_reviews(reviews, {'branch': branch})
+
+        locations = {}
+        for review in filtered_reviews:
+            loc = review.reviewer_location
+            if loc not in locations:
+                locations[loc] = {'sum': 0, 'count': 0}
+
+            if loc in locations:
+                locations[loc]['sum'] += review.rating
+                locations[loc]['count'] += 1
+
+        locations_averages = {k: round(v['sum'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in locations.items()}
+
+        sorted_locations = sorted(locations_averages.items(), key=lambda i: i[1], reverse=True)
+
+        if limit:
+            return sorted_locations[:limit]
+        else:
+            return sorted_locations
