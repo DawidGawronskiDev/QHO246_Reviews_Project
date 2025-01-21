@@ -1,3 +1,7 @@
+from typing import List
+import matplotlib.pyplot as plt
+
+
 class Review:
     def __init__(self, review_id: int, rating: int, year_month: str, reviewer_location: str, branch: str):
         self.review_id = review_id
@@ -12,3 +16,17 @@ class Review:
                 f'Date: {self.year_month}. '
                 f'Reviewer Location: {self.reviewer_location}. '
                 f'Branch: {self.branch.replace('_', ' ')}')
+
+
+class Chart:
+    def __init__(self, title: str, labels: List[str], vals: List[int], legend: List[str] = None) -> None:
+        self.title = title
+        self.labels = labels
+        self.vals = vals
+        self.legend = legend
+
+        self.fig, self.ax = plt.subplots()
+        self.ax.set_title(self.title)
+
+    def show(self):
+        plt.show()
