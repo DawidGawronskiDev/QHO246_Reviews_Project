@@ -45,3 +45,20 @@ class Visual:
 
         # show figure
         plt.show()
+
+    @staticmethod
+    def show_park_ranking_by_nationality(labels: List[str], vals: List[int], legend: List[str] = None) -> None:
+        fig, ax = plt.subplots()
+
+        # plot values and labels
+        ax.bar(labels, vals)
+
+        # Set title
+        ax.set_title('Park Ranking by Nationality')
+
+        # create legend
+        if legend:
+            ax.legend(legend)
+
+        # show figure
+        plt.show()
