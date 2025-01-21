@@ -115,3 +115,16 @@ class Process:
             if review.branch in counts:
                 counts[review.branch] += 1
         return counts
+
+    @staticmethod
+    def get_avg_branches_rating(branches: List[str], reviews: List[Review]):
+        avg_ratings = {}
+        for branch in branches:
+            avg_ratings[branch] = {'sum_reviews': 0, 'count': 0}
+
+        for review in reviews:
+            avg_ratings[review.branch]['count'] += 1
+            avg_ratings[review.branch]['sum_reviews'] += review.rating
+
+        return {k: round(v['sum_reviews'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in
+                list(avg_ratings.items())}
