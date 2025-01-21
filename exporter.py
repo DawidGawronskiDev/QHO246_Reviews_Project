@@ -18,6 +18,12 @@ class Review:
                 f'Branch: {self.branch.replace('_', ' ')}')
 
 
+class Branch:
+    def __int__(self, branch: str, reviews: List[Review]) -> None:
+        self.branch = branch
+        self.reviews = reviews
+
+
 class Chart:
     def __init__(self, title: str, labels: List[str], vals: List[int], legend: List[str] = None) -> None:
         self.title = title
