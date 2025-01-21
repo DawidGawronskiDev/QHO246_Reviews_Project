@@ -69,6 +69,9 @@ class Branch:
         else:
             return sorted_locations
 
+    def get_name(self):
+        return self.branch.replace('_', ' ')
+
 
 class Chart:
     def __init__(self, title: str, labels: List[str], vals: List[int], legend: List[str] = None) -> None:

@@ -57,7 +57,7 @@ class Controller:
                     if choice in ['A', 'B']:
                         break
                 else:
-                    print('Input does not correspond with any option!', end=' ')
+                    print('Input does not correspond with any option!')
 
     def a_submenu(self):
         message = 'Please enter one of the following options:'
@@ -88,7 +88,7 @@ class Controller:
                     if choice in options.keys():
                         break
                 else:
-                    print('Input does not correspond with any option!', end=' ')
+                    print('Input does not correspond with any option!')
 
     def a_submenu_a(self):
         branch = TUI.validate_branch(
@@ -123,7 +123,7 @@ class Controller:
                                          self.branches[branch].get_reviews_years())
 
         TUI.print_message(
-            f'The average rating for {branch.replace('_', ' ')} branch in year {year} is {
+            f'The average rating for {self.branches[branch].get_name()} branch in year {year} is {
             self.branches[branch].get_avg_rating()}')
 
     def a_submenu_d(self):
@@ -151,14 +151,14 @@ class Controller:
 
     def b_submenu_a(self):
         data = Process.get_branches_reviews_count(self.branches)
-        branches = [branch.replace('_', ' ') for branch in list(data.keys())]
+        branches = [self.branches[branch].get_name() for branch in list(data.keys())]
         reviews_count = list(data.values())
         Visual.show_chart("pie", 'Most Reviewed Parks', labels=reviews_count, vals=reviews_count,
                           legend=branches)
 
     def b_submenu_b(self):
         data = Process.get_avg_branches_rating(self.branches)
-        branches = [branch.replace('_', ' ') for branch in list(data.keys())]
+        branches = [self.branches[branch].get_name() for branch in list(data.keys())]
         avg_reviews = list(data.values())
         Visual.show_chart("bar", 'Average Scores', labels=branches, vals=avg_reviews)
 
@@ -199,7 +199,7 @@ class Controller:
                     if choice in options.keys():
                         break
                 else:
-                    print('Input does not correspond with any option!', end=' ')
+                    print('Input does not correspond with any option!')
 
 
 if __name__ == '__main__':

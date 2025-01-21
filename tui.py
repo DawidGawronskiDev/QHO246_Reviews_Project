@@ -43,7 +43,7 @@ class TUI:
         i = str(input()).strip()
 
         if len(i) == 0:
-            print("Input cannot be empty!", end=' ')
+            print("Input cannot be empty!")
             return
         else:
             return i
@@ -80,7 +80,7 @@ class TUI:
                     TUI.print_confirmed_option(choice.replace('_', ' '))
                     break
                 else:
-                    print('Input does not correspond with any option!', end=' ')
+                    print('Input does not correspond with any option!')
         return choice
 
     @staticmethod
@@ -95,5 +95,5 @@ class TUI:
                     TUI.print_confirmed_option(choice)
                     break
                 else:
-                    print('Input does not correspond with any option!', end=' ')
+                    print('Input does not correspond with any option!')
         return choice
