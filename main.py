@@ -127,27 +127,8 @@ class Controller:
             self.branches[branch].get_avg_rating()}')
 
     def a_submenu_d(self):
-        """
-            This code must be refactored
-        """
-        branches = {}
-        for review in self.reviews:
-            if review.branch not in branches:
-                branches[review.branch] = {}
-            else:
-                if review.reviewer_location not in branches[review.branch]:
-                    branches[review.branch][review.reviewer_location] = [0, 0]  # sum rating & reviews count
-                else:
-                    branches[review.branch][review.reviewer_location][0] += review.rating
-                    branches[review.branch][review.reviewer_location][1] += 1
-
-        for branch_name, locations in branches.items():
-            print(branch_name)
-            for location, score in locations.items():
-                if score[1] != 0:
-                    print(location, round(score[0] / score[1], 1))
-                else:
-                    print(location, 0)
+        for k, v in self.branches.items():
+            print(k, v.get_avg_rating_by_loc())
 
     def b_submenu_a(self):
         data = Process.get_branches_reviews_count(self.branches)

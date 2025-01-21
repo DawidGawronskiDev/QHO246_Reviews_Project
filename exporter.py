@@ -46,6 +46,17 @@ class Branch:
             return 0
         return round(sum([review.rating for review in self.reviews]) / len(self.reviews), 1)
 
+    def get_avg_rating_by_loc(self):
+        avg_ratings = {location: {'sum': 0, 'count': 0} for location in self.get_locations()}
+
+        for review in self.reviews:
+            loc = review.reviewer_location
+            if loc in avg_ratings:
+                avg_ratings[loc]['sum'] += review.rating
+                avg_ratings[loc]['count'] += 1
+
+        return {k: round(v['sum'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in avg_ratings.items()}
+
     def get_review_count(self):
         return len(self.reviews)
 
