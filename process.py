@@ -5,7 +5,7 @@ It is likely that most sections will require functions to be placed in this modu
 """
 
 import csv
-from exporter import Review
+from exporter import Branch, Review
 from typing import List, Dict
 
 
@@ -14,37 +14,23 @@ class Process:
         pass
 
     @staticmethod
-    def read_reviews(file_path: str) -> List[Review]:
+    def read_reviews(file_path: str) -> Dict[str, Branch]:
         print('Loading reviews...')
         with open(file_path) as f:
             csvreader = csv.reader(f)
             csvreader.__next__()
-            reviews = []
+            branches = {}
             for review in csvreader:
                 review_id, rating, year_month, reviewer_location, branch = review
-                reviews.append(Review(int(review_id), int(rating), year_month, reviewer_location, branch))
+
+                if branch not in branches:
+                    branches[branch] = Branch(branch, [])
+
+                branches[branch].reviews.append(
+                    Review(int(review_id), int(rating), year_month, reviewer_location, branch))
+
         print('Loading finished!')
-        return reviews
-
-    @staticmethod
-    def get_branches(reviews: List[Review]) -> List[str]:
-        branches = []
-        for review in reviews:
-            if review.branch not in branches:
-                branches.append(review.branch)
         return branches
-
-    def get_reviewers_locations(reviews: List[Review]) -> List[str]:
-        locations = []
-        for review in reviews:
-            if review.reviewer_location not in locations:
-                locations.append(review.reviewer_location)
-        return locations
-
-    @staticmethod
-    def get_branch_reviews(branch: str, reviews: List[Review]) -> List[Review]:
-        return [review for review in reviews if
-                Process.trans_str(review.branch) == Process.trans_str(branch)]
 
     @staticmethod
     def create_options(items: List[str]) -> Dict[str, str]:
@@ -87,67 +73,9 @@ class Process:
         return filtered_reviews
 
     @staticmethod
-    def get_reviews_years(branch: str, reviews: List[Review]):
-        filtered_reviews = Process.filter_reviews(reviews, {'branch': branch})
-
-        years = []
-        for review in filtered_reviews:
-            year = review.year_month.split('-')[0]
-            if year not in years:
-                years.append(year)
-
-        return sorted(years)
+    def get_branches_reviews_count(branches: Dict[str, Branch]) -> Dict[str, int]:
+        return {k: v.get_review_count() for k, v in branches.items()}
 
     @staticmethod
-    def get_avg_rating(reviews: List[Review]) -> float:
-        if len(reviews) <= 0:
-            return 0
-
-        return round(sum([review.rating for review in reviews]) / len(reviews), 1)
-
-    @staticmethod
-    def get_branches_reviews_count(branches: List[str], reviews: List[Review]) -> Dict[str, int]:
-        counts = {}
-        for branch in branches:
-            counts[branch] = 0
-
-        for review in reviews:
-            if review.branch in counts:
-                counts[review.branch] += 1
-        return counts
-
-    @staticmethod
-    def get_avg_branches_rating(branches: List[str], reviews: List[Review]):
-        avg_ratings = {}
-        for branch in branches:
-            avg_ratings[branch] = {'sum_reviews': 0, 'count': 0}
-
-        for review in reviews:
-            avg_ratings[review.branch]['count'] += 1
-            avg_ratings[review.branch]['sum_reviews'] += review.rating
-
-        return {k: round(v['sum_reviews'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in
-                list(avg_ratings.items())}
-
-    @staticmethod
-    def get_top_branch_locations(branch: str, reviews: List[Review], limit: int = None):
-        filtered_reviews = Process.filter_reviews(reviews, {'branch': branch})
-
-        locations = {}
-        for review in filtered_reviews:
-            loc = review.reviewer_location
-            if loc not in locations:
-                locations[loc] = {'sum': 0, 'count': 0}
-
-            if loc in locations:
-                locations[loc]['sum'] += review.rating
-                locations[loc]['count'] += 1
-
-        locations_averages = {k: round(v['sum'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in locations.items()}
-
-        sorted_locations = sorted(locations_averages.items(), key=lambda i: i[1], reverse=True)
-
-        if limit:
-            return sorted_locations[:limit]
-        else:
-            return sorted_locations
+    def get_avg_branches_rating(branches: Dict[str, Branch]):
+        return {k: v.get_avg_rating() for k, v in branches.items()}

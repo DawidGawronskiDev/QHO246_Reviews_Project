@@ -8,8 +8,8 @@ Note:   any user input/output should be done in the module 'tui'
         any visualisation should be done in the module 'visual'
 """
 
-from typing import List
-from exporter import Review
+from typing import Dict, List
+from exporter import Review, Branch
 from process import Process
 from visual import Visual
 from tui import TUI
@@ -18,16 +18,14 @@ from tui import TUI
 class Controller:
     def __init__(self):
         self.reviews: List[Review] = []
-        self.branches: List[str] = []
+        self.branches: Dict[str, Branch] = {}
         self.reviewers_locations: List[str] = []
 
         self.start()
 
     def start(self):
         TUI.print_title()
-        self.reviews = Process.read_reviews('data/disneyland_reviews.csv')
-        self.branches = Process.get_branches(self.reviews)
-        self.reviewers_locations = Process.get_reviewers_locations(self.reviews)
+        self.branches = Process.read_reviews('data/disneyland_reviews.csv')
 
         while True:
             self.main_menu()
@@ -95,39 +93,38 @@ class Controller:
     def a_submenu_a(self):
         branch = TUI.validate_branch(
             'For which branch would you like to see reviews?',
-            self.branches)
-        TUI.print_reviews(Process.get_branch_reviews(branch, self.reviews))
+            list(self.branches.keys()))
+        TUI.print_reviews(list(self.branches[branch].get_reviews()))
 
     def a_submenu_b(self):
         branch = TUI.validate_branch(
             'For which reviewer location would you like to see number of reviews?',
-            self.branches
+            list(self.branches.keys())
         )
 
         location = TUI.validate_multi_choice(
             'For which reviewer location would you like to see number of reviews?',
-            Process.get_reviewers_locations(self.reviews)
+            self.branches[branch].get_locations()
         )
 
         TUI.print_reviews_count(
             branch,
             location,
-            Process.filter_reviews(self.reviews, {'branch': branch, 'reviewer_location': location})
+            Process.filter_reviews(self.branches[branch].get_reviews(),
+                                   {'branch': branch, 'reviewer_location': location})
         )
 
     def a_submenu_c(self):
         branch = TUI.validate_branch(
             'Select one of the following branches: ',
-            self.branches
+            list(self.branches.keys())
         )
         year = TUI.validate_multi_choice('Select one of the following years:',
-                                         Process.get_reviews_years(branch, self.reviews))
+                                         self.branches[branch].get_reviews_years())
 
         TUI.print_message(
             f'The average rating for {branch.replace('_', ' ')} branch in year {year} is {
-            Process.get_avg_rating(
-                Process.filter_reviews(self.reviews, {'branch': branch, 'year': year})
-            )}')
+            self.branches[branch].get_avg_rating()}')
 
     def a_submenu_d(self):
         """
@@ -153,21 +150,21 @@ class Controller:
                     print(location, 0)
 
     def b_submenu_a(self):
-        data = Process.get_branches_reviews_count(self.branches, self.reviews)
+        data = Process.get_branches_reviews_count(self.branches)
         branches = [branch.replace('_', ' ') for branch in list(data.keys())]
         reviews_count = list(data.values())
         Visual.show_chart("pie", 'Most Reviewed Parks', labels=reviews_count, vals=reviews_count,
                           legend=branches)
 
     def b_submenu_b(self):
-        data = Process.get_avg_branches_rating(self.branches, self.reviews)
+        data = Process.get_avg_branches_rating(self.branches)
         branches = [branch.replace('_', ' ') for branch in list(data.keys())]
         avg_reviews = list(data.values())
         Visual.show_chart("bar", 'Average Scores', labels=branches, vals=avg_reviews)
 
     def b_submenu_c(self):
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
-        data = Process.get_top_branch_locations(branch, self.reviews, 10)
+        data = self.branches[branch].get_top_locations(10)
         locations = [item[0] for item in data]
         average_ratings = [item[1] for item in data]
 

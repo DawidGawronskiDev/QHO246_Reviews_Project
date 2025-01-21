@@ -23,6 +23,52 @@ class Branch:
         self.branch = branch
         self.reviews = reviews
 
+    def get_reviews(self) -> List[Review]:
+        return list(self.reviews)
+
+    def get_locations(self) -> List[str]:
+        locations = []
+        for review in self.reviews:
+            if review.reviewer_location not in locations:
+                locations.append(review.reviewer_location)
+        return locations
+
+    def get_reviews_years(self):
+        years = []
+        for review in self.reviews:
+            year = review.year_month.split('-')[0]
+            if year not in years:
+                years.append(year)
+        return sorted(years)
+
+    def get_avg_rating(self) -> float:
+        if len(self.reviews) <= 0:
+            return 0
+        return round(sum([review.rating for review in self.reviews]) / len(self.reviews), 1)
+
+    def get_review_count(self):
+        return len(self.reviews)
+
+    def get_top_locations(self, limit: int = None):
+        locations = {}
+        for review in self.reviews:
+            loc = review.reviewer_location
+            if loc not in locations:
+                locations[loc] = {'sum': 0, 'count': 0}
+
+            if loc in locations:
+                locations[loc]['sum'] += review.rating
+                locations[loc]['count'] += 1
+
+        locations_averages = {k: round(v['sum'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in locations.items()}
+
+        sorted_locations = sorted(locations_averages.items(), key=lambda i: i[1], reverse=True)
+
+        if limit:
+            return sorted_locations[:limit]
+        else:
+            return sorted_locations
+
 
 class Chart:
     def __init__(self, title: str, labels: List[str], vals: List[int], legend: List[str] = None) -> None:
