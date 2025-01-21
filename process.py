@@ -104,3 +104,14 @@ class Process:
             return 0
 
         return round(sum([review.rating for review in reviews]) / len(reviews), 1)
+
+    @staticmethod
+    def get_branches_reviews_count(branches: List[str], reviews: List[Review]) -> Dict[str, int]:
+        counts = {}
+        for branch in branches:
+            counts[branch] = 0
+
+        for review in reviews:
+            if review.branch in counts:
+                counts[review.branch] += 1
+        return counts
