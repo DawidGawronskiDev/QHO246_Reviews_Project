@@ -43,3 +43,16 @@ class Pie(Chart):
             self.ax.legend(self.legend)
 
         self.show()
+
+
+class Bar(Chart):
+    def __init__(self, title: str, labels: List[str], vals: List[int], legend: List[str] = None):
+        super().__init__(title, labels, vals, legend)
+        self.create()
+
+    def create(self):
+        self.ax.bar(self.labels, self.vals)
+        if self.legend:
+            self.ax.legend(self.legend)
+
+        self.show()
