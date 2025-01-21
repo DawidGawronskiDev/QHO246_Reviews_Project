@@ -11,6 +11,7 @@ Note:   any user input/output should be done in the module 'tui'
 from typing import List
 from exporter import Review
 from process import Process
+from visual import Visual
 from tui import TUI
 
 
@@ -151,6 +152,12 @@ class Controller:
                 else:
                     print(location, 0)
 
+    def b_submenu_a(self):
+        data = Process.get_branches_reviews_count(self.branches, self.reviews)
+        branches = [branch.replace('_', ' ') for branch in list(data.keys())]
+        reviews_count = list(data.values())
+        Visual.show_most_reviewed_parks(labels=reviews_count, vals=reviews_count, legend=branches)
+
     def b_submenu(self):
         message = 'Please enter one of the following options:'
         options = Process.create_options([
@@ -161,7 +168,7 @@ class Controller:
         ])
 
         actions = {
-            'A': lambda: print(1),
+            'A': lambda: self.b_submenu_a(),
             'B': lambda: print(2),
             'C': lambda: print(3),
             'D': lambda: print(4)
