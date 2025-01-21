@@ -19,7 +19,7 @@ class Review:
 
 
 class Branch:
-    def __int__(self, branch: str, reviews: List[Review]) -> None:
+    def __init__(self, branch: str, reviews: List[Review]) -> None:
         self.branch = branch
         self.reviews = reviews
 
