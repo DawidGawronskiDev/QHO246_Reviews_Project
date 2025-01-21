@@ -164,6 +164,16 @@ class Controller:
         avg_reviews = list(data.values())
         Visual.show_avg_reviews(labels=branches, vals=avg_reviews)
 
+    def b_submenu_c(self):
+        branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
+        data = Process.get_top_branch_locations(branch, self.reviews, 10)
+        locations = [item[0] for item in data]
+        average_ratings = [item[1] for item in data]
+
+        print(locations, average_ratings)
+
+        Visual.show_park_ranking_by_nationality(labels=locations, vals=average_ratings)
+
     def b_submenu(self):
         message = 'Please enter one of the following options:'
         options = Process.create_options([
@@ -176,7 +186,7 @@ class Controller:
         actions = {
             'A': lambda: self.b_submenu_a(),
             'B': lambda: self.b_submenu_b(),
-            'C': lambda: print(3),
+            'C': lambda: self.b_submenu_c(),
             'D': lambda: print(4)
         }
 
