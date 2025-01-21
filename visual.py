@@ -4,8 +4,7 @@ Any visualisations should be generated via functions in this module.
 """
 
 from typing import List
-import matplotlib.pyplot as plt
-import numpy as np
+from exporter import Pie, Bar
 
 
 class Visual:
@@ -13,52 +12,12 @@ class Visual:
         pass
 
     @staticmethod
-    def show_most_reviewed_parks(labels: List[str], vals: List[int], legend: List[str] = None) -> None:
-        fig, ax = plt.subplots()
+    def show_chart(chart_type: str, title, labels: List[str], vals: List[int], legend: List[str] = None):
+        chart_classes = {
+            "pie": Pie,
+            "bar": Bar
+        }
+        if chart_type.lower() not in chart_classes:
+            raise ValueError(f"Invalid chart type '{chart_type}'. Supported types are: {list(chart_classes.keys())}")
 
-        # plot values and labels
-        ax.pie(vals, labels=labels)
-
-        # Set title
-        ax.set_title('Most Review Parks')
-
-        # create legend
-        if legend:
-            ax.legend(legend)
-
-        # show figure
-        plt.show()
-
-    @staticmethod
-    def show_avg_reviews(labels: List[str], vals: List[int], legend: List[str] = None) -> None:
-        fig, ax = plt.subplots()
-
-        # plot values and labels
-        ax.bar(labels, vals)
-
-        # Set title
-        ax.set_title('Average Scores')
-
-        # create legend
-        if legend:
-            ax.legend(legend)
-
-        # show figure
-        plt.show()
-
-    @staticmethod
-    def show_park_ranking_by_nationality(labels: List[str], vals: List[int], legend: List[str] = None) -> None:
-        fig, ax = plt.subplots()
-
-        # plot values and labels
-        ax.bar(labels, vals)
-
-        # Set title
-        ax.set_title('Park Ranking by Nationality')
-
-        # create legend
-        if legend:
-            ax.legend(legend)
-
-        # show figure
-        plt.show()
+        chart_classes[chart_type.lower()](title, labels, vals, legend)

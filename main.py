@@ -156,13 +156,14 @@ class Controller:
         data = Process.get_branches_reviews_count(self.branches, self.reviews)
         branches = [branch.replace('_', ' ') for branch in list(data.keys())]
         reviews_count = list(data.values())
-        Visual.show_most_reviewed_parks(labels=reviews_count, vals=reviews_count, legend=branches)
+        Visual.show_chart("pie", 'Most Reviewed Parks', labels=reviews_count, vals=reviews_count,
+                          legend=branches)
 
     def b_submenu_b(self):
         data = Process.get_avg_branches_rating(self.branches, self.reviews)
         branches = [branch.replace('_', ' ') for branch in list(data.keys())]
         avg_reviews = list(data.values())
-        Visual.show_avg_reviews(labels=branches, vals=avg_reviews)
+        Visual.show_chart("bar", 'Average Scores', labels=branches, vals=avg_reviews)
 
     def b_submenu_c(self):
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
@@ -170,9 +171,7 @@ class Controller:
         locations = [item[0] for item in data]
         average_ratings = [item[1] for item in data]
 
-        print(locations, average_ratings)
-
-        Visual.show_park_ranking_by_nationality(labels=locations, vals=average_ratings)
+        Visual.show_chart("bar", 'Park Ranking by Nationality', labels=locations, vals=average_ratings)
 
     def b_submenu(self):
         message = 'Please enter one of the following options:'
