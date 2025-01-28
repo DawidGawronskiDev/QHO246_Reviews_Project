@@ -7,9 +7,9 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
-from exporter import Review
+from exporter import Review, Branch
 from process import Process
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 
 class TUI:
@@ -49,7 +49,7 @@ class TUI:
             return i
 
     @staticmethod
-    def print_confirmed_option(option: Tuple[str] | str):
+    def print_confirmed_option(option):
         if isinstance(option, str):
             print(f'You have chosen option - {option}')
         else:
@@ -65,7 +65,7 @@ class TUI:
         print(f'There are {len(reviews)} reviews from reviewers from {loc} for {branch.replace('_', ' ')} branch.')
 
     @staticmethod
-    def validate_branch(msg: str, branches: List[str]) -> str:
+    def validate_branch(msg: str, branches: Dict[str, Branch] | List[str]) -> str:
         branch_options = Process.create_options(branches)
 
         while True:

@@ -27,6 +27,8 @@ class Controller:
         TUI.print_title()
         self.branches = Process.read_reviews('data/disneyland_reviews.csv')
 
+        print(f'There are {Process.count_reviews(self.branches)} reviews.')
+
         while True:
             self.main_menu()
 

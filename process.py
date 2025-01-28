@@ -33,7 +33,14 @@ class Process:
         return branches
 
     @staticmethod
-    def create_options(items: List[str]) -> Dict[str, str]:
+    def count_reviews(branches):
+        count = 0
+        for branch in branches.values():
+            count += branch.get_review_count()
+        return count
+
+    @staticmethod
+    def create_options(items: Dict[str, Branch] | List[str]) -> Dict[str, str]:
         """
             Generates dictionary that maps items to English alphabet letters (A-Z).
 

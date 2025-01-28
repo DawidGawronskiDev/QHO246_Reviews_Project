@@ -12,7 +12,7 @@ class Visual:
         pass
 
     @staticmethod
-    def show_chart(chart_type: str, title, labels: List[str], vals: List[int], legend: List[str] = None):
+    def show_chart(chart_type: str, title, labels: List[str | int], vals: List[int], legend: List[str] = None):
         chart_classes = {
             "pie": Pie,
             "bar": Bar
