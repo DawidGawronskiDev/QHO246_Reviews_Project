@@ -49,12 +49,12 @@ Ensure you have **Python 3.13.1** installed on your system.
 
 3. **Run the application**:
    ```sh
-   python3 main.py
+   python main.py
    ```
 
 ## Usage
 
-1. **Launch the application** using `python3 main.py`.
+1. **Launch the application** using `python main.py`.
 2. **Navigate the menu** by selecting an option:
     - **View Data**: Display reviews and statistics.
     - **Visualize Data**: Generate charts for better insights.
