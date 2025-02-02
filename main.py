@@ -1,11 +1,9 @@
 """
-This module is responsible for the overall program flow. It controls how the user interacts with the
-program and how the program behaves. It uses the other modules to interact with the user, carry out
-processing, and for visualising information.
-
-Note:   any user input/output should be done in the module 'tui'
-        any processing should be done in the module 'process'
-        any visualisation should be done in the module 'visual'
+This module manages the overall program flow, controlling user interaction
+and program behavior. It utilizes the other modules to:
+- Handle user input/output via 'tui'.
+- Process data via 'process'.
+- Visualize data via 'visual'.
 """
 
 from typing import Dict, List
@@ -16,7 +14,18 @@ from tui import TUI
 
 
 class Controller:
+    """
+        Handles the main program flow, including user interactions, data processing,
+        and visualization.
+
+        Attributes:
+            reviews (List[Review]): A list of reviews.
+            branches (Dict[str, Branch]): A dictionary of branches containing reviews.
+            reviewers_locations (List[str]): A list of unique reviewer locations.
+    """
+
     def __init__(self):
+        """Initializes the program and starts the main menu."""
         self.reviews: List[Review] = []
         self.branches: Dict[str, Branch] = {}
         self.reviewers_locations: List[str] = []
@@ -24,6 +33,7 @@ class Controller:
         self.start()
 
     def start(self):
+        """Starts the program, loads data, and displays the main menu."""
         TUI.print_title()
         self.branches = Process.read_reviews('data/disneyland_reviews.csv')
         print(f'There are {Process.count_reviews(self.branches)} reviews.')
@@ -31,6 +41,7 @@ class Controller:
             self.main_menu()
 
     def main_menu(self):
+        """Displays the main menu and handles user selection."""
         options = Process.create_options([
             'View Data',
             'Visualise Data',
@@ -61,6 +72,7 @@ class Controller:
                     print('Input does not correspond with any option!')
 
     def a_submenu(self):
+        """Displays the data viewing submenu."""
         options = Process.create_options([
             'View Reviews by Park',
             'Number of Reviews by Park and Reviewer Location',
@@ -93,12 +105,14 @@ class Controller:
                     print('Input does not correspond with any option!')
 
     def a_submenu_a(self):
+        """Displays reviews for a selected park."""
         branch = TUI.validate_branch(
             'For which branch would you like to see reviews?',
             list(self.branches.keys()))
         TUI.print_reviews(self.branches[branch].reviews)
 
     def a_submenu_b(self):
+        """Displays the number of reviews by park and reviewer location."""
         branch = TUI.validate_branch(
             'For which reviewer location would you like to see number of reviews?',
             list(self.branches.keys())
@@ -117,6 +131,7 @@ class Controller:
         )
 
     def a_submenu_c(self):
+        """Displays the average review score for a park in a selected year."""
         branch = TUI.validate_branch(
             'Select one of the following branches: ',
             list(self.branches.keys())
@@ -129,21 +144,25 @@ class Controller:
             self.branches[branch].avg_rating}')
 
     def a_submenu_d(self):
+        """Displays the average score per park by reviewer location."""
         TUI.print_avg_score_by_loc(self.branches)
 
     def b_submenu_a(self):
+        """Displays a pie chart of the most reviewed parks."""
         data = Process.get_branches_reviews_count(self.branches)
         reviews_count = list(data.values())
         Visual.show_chart("pie", 'Most Reviewed Parks', labels=reviews_count, vals=reviews_count,
                           legend=[self.branches[branch].get_name() for branch in list(data.keys())])
 
     def b_submenu_b(self):
+        """Displays a bar chart of average scores per park."""
         data = Process.get_avg_branches_rating(self.branches)
         Visual.show_chart("bar", 'Average Scores',
                           labels=[self.branches[branch].get_name() for branch in list(data.keys())],
                           vals=list(data.values()))
 
     def b_submenu_c(self):
+        """Displays a bar chart ranking parks by nationality."""
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
         data = self.branches[branch].top_locations
 
@@ -151,6 +170,7 @@ class Controller:
                           vals=[item[1] for item in data])
 
     def b_submenu_d(self):
+        """Displays a bar chart showing the most popular months by park."""
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
         months, avg_rating = zip(*self.branches[branch].avg_popularity_by_month)
 
@@ -158,6 +178,7 @@ class Controller:
                           labels=list(months), vals=list(avg_rating))
 
     def b_submenu(self):
+        """Displays the data visualization submenu."""
         options = Process.create_options([
             'Most Reviewed Parks',
             'Average Scores',
@@ -190,6 +211,7 @@ class Controller:
                     print('Input does not correspond with any option!')
 
     def c_submenu(self):
+        """Displays the export data submenu."""
         options = Process.create_options([
             'TXT',
             'CSV',
