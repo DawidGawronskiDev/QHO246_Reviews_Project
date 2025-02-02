@@ -1,55 +1,90 @@
 """
-TUI is short for Text-User Interface. This module is responsible for communicating with the user.
-The functions in this module will display information to the user and/or retrieve a response from the user.
-Each function in this module should utilise any parameters and perform user input/output.
-A function may also need to format and/or structure a response e.g. return a list, tuple, etc.
-Any errors or invalid inputs should be handled appropriately.
-Please note that you do not need to read the data file or perform any other such processing in this module.
+TUI (Text-User Interface) Module
+
+This module is responsible for communicating with the user.
+It displays information and retrieves user input while handling any errors or invalid inputs.
+No data processing should be performed here.
+
+Functions:
+- Display messages, options, and structured data (tables).
+- Handle user input and validation.
+- Format outputs appropriately.
 """
 
+from typing import Dict, List, Union
 from exporter import Review, Branch, Table
 from process import Process
-from typing import Dict, List
 
 
 class TUI:
-    def __init__(self):
+    """
+    A utility class for handling text-based user interaction.
+
+    Provides methods to display messages, options, and formatted tables,
+    as well as handling and validating user input.
+    """
+
+    def __init__(self) -> None:
+        """This class is not meant to be instantiated."""
         pass
 
     @staticmethod
     def print_title() -> None:
+        """Prints the application title with a decorative line."""
         title = 'Disneyland Reviews Analyser'
         line = '-' * len(title)
         print(f'{line}\n{title}\n{line}')
 
     @staticmethod
-    def print_options(options: Dict[str, str] | List[str], indent: int = 0) -> None:
-        if indent < 0:
-            raise ValueError('Indent value must be greater than 0!')
+    def print_options(options: Union[Dict[str, str], List[str]], indent: int = 0) -> None:
+        """
+        Displays available options to the user.
 
-        if not isinstance(options, dict):
-            for v in options:
-                print(f'{'\t' * indent}- {v.replace('_', ' ')}')
+        Args:
+            options (Union[Dict[str, str], List[str]]): A dictionary of labeled options or a list of options.
+            indent (int, optional): Number of tab spaces for indentation. Defaults to 0.
+
+        Raises:
+            ValueError: If indent is negative.
+        """
+        if indent < 0:
+            raise ValueError('Indent value must be greater than or equal to 0!')
+
+        if isinstance(options, dict):
+            for key, value in options.items():
+                print(f"{'\t' * indent}[{key}] {value.replace('_', ' ')}")
         else:
-            for k, v in options.items():
-                print(f'{'\t' * indent}[{k}] {v.replace('_', ' ')}')
+            for value in options:
+                print(f"{'\t' * indent}- {value.replace('_', ' ')}")
 
     @staticmethod
     def print_message(message: str) -> None:
+        """Displays a message to the user."""
         print(message)
 
     @staticmethod
-    def handle_input():
-        i = str(input()).strip()
+    def handle_input() -> Union[str, None]:
+        """
+        Retrieves user input, ensuring it's not empty.
 
-        if len(i) == 0:
+        Returns:
+            Union[str, None]: The user input string if valid, otherwise None.
+        """
+        user_input = input().strip()
+
+        if not user_input:
             print("Input cannot be empty!")
-            return
-        else:
-            return i
+            return None
+        return user_input
 
     @staticmethod
-    def print_confirmed_option(option):
+    def print_confirmed_option(option: Union[str, Tuple[str, str]]) -> None:
+        """
+        Displays the selected option confirmation.
+
+        Args:
+            option (Union[str, Tuple[str, str]]): Either a string option or a tuple with a key and description.
+        """
         if isinstance(option, str):
             print(f'You have chosen option - {option}')
         else:
@@ -57,18 +92,46 @@ class TUI:
 
     @staticmethod
     def print_reviews(reviews: List[Review]) -> None:
-        print(
-            Table(list(vars(reviews[0]).keys()),
-                  [list(vars(review).values()) for review in reviews],
-                  [16, 8, 16, 32])
-        )
+        """
+        Displays reviews in a formatted table.
+
+        Args:
+            reviews (List[Review]): List of reviews to display.
+        """
+        if not reviews:
+            print("No reviews available.")
+            return
+
+        headers = list(vars(reviews[0]).keys())
+        rows = [list(vars(review).values()) for review in reviews]
+        column_widths = [16, 8, 16, 32]
+
+        print(Table(headers, rows, column_widths))
 
     @staticmethod
     def print_reviews_count(branch: str, loc: str, reviews: List[Review]) -> None:
-        print(f'There are {len(reviews)} reviews from reviewers from {loc} for {branch.replace('_', ' ')} branch.')
+        """
+        Displays the number of reviews for a given branch and location.
+
+        Args:
+            branch (str): The branch name.
+            loc (str): The reviewer location.
+            reviews (List[Review]): List of matching reviews.
+        """
+        print(f'There are {len(reviews)} reviews from reviewers in {loc} for {branch.replace("_", " ")} branch.')
 
     @staticmethod
-    def validate_branch(msg: str, branches: Dict[str, Branch] | List[str]) -> str:
+    def validate_branch(msg: str, branches: Union[Dict[str, Branch], List[str]]) -> str:
+        """
+        Validates and retrieves a selected branch from user input.
+
+        Args:
+            msg (str): The message prompt for the user.
+            branches (Union[Dict[str, Branch], List[str]]): Available branches.
+
+        Returns:
+            str: The selected branch name.
+        """
         branch_options = Process.create_options(branches)
 
         while True:
@@ -79,30 +142,48 @@ class TUI:
             if choice:
                 choice = choice.upper()
                 if choice in branch_options:
-                    choice = branch_options[choice]
-                    TUI.print_confirmed_option(choice.replace('_', ' '))
-                    break
+                    selected_branch = branch_options[choice]
+                    TUI.print_confirmed_option(selected_branch.replace('_', ' '))
+                    return selected_branch
                 else:
                     print('Input does not correspond with any option!')
-        return choice
 
     @staticmethod
-    def print_avg_score_by_loc(branches: Dict[str, Branch]):
-        print(Table(['Park', 'Reviewer Location', 'Average Rating'],
-                    [[k, *rating] for k, v in branches.items() for rating in v.avg_rating_by_loc.items()],
-                    [32, 48, 16]))
+    def print_avg_score_by_loc(branches: Dict[str, Branch]) -> None:
+        """
+        Displays the average rating per reviewer location in a formatted table.
+
+        Args:
+            branches (Dict[str, Branch]): Dictionary of branches with review data.
+        """
+        headers = ['Park', 'Reviewer Location', 'Average Rating']
+        rows = [[branch_name, *rating] for branch_name, branch in branches.items() for rating in
+                branch.avg_rating_by_loc.items()]
+        column_widths = [32, 48, 16]
+
+        print(Table(headers, rows, column_widths))
 
     @staticmethod
     def validate_multi_choice(msg: str, options: List[str]) -> str:
+        """
+        Validates and retrieves a selected option from the user.
+
+        Args:
+            msg (str): The message prompt for the user.
+            options (List[str]): The available options.
+
+        Returns:
+            str: The validated choice.
+        """
         while True:
             TUI.print_options(options, 3)
             TUI.print_message(msg)
             choice = TUI.handle_input()
 
             if choice:
+                normalized_choice = Process.trans_str(choice)
                 for option in options:
-                    if Process.trans_str(choice) == Process.trans_str(option):
+                    if normalized_choice == Process.trans_str(option):
                         TUI.print_confirmed_option(option)
                         return option
-                else:
-                    print('Input does not correspond with any option!')
+                print('Input does not correspond with any option!')
