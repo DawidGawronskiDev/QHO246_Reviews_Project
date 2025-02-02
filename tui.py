@@ -87,6 +87,12 @@ class TUI:
         return choice
 
     @staticmethod
+    def print_avg_score_by_loc(branches: Dict[str, Branch]):
+        print(Table(['Park', 'Reviewer Location', 'Average Rating'],
+                    [[k, *rating] for k, v in branches.items() for rating in v.get_avg_rating_by_loc().items()],
+                    [32, 48, 16]))
+
+    @staticmethod
     def validate_multi_choice(msg: str, options: List[str]) -> str:
         while True:
             TUI.print_options(options, 3)

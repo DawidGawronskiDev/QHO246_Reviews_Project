@@ -129,8 +129,7 @@ class Controller:
             self.branches[branch].get_avg_rating()}')
 
     def a_submenu_d(self):
-        for k, v in self.branches.items():
-            print(k, v.get_avg_rating_by_loc())
+        TUI.print_avg_score_by_loc(self.branches)
 
     def b_submenu_a(self):
         data = Process.get_branches_reviews_count(self.branches)
