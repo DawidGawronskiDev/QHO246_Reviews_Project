@@ -146,6 +146,13 @@ class Controller:
         Visual.show_chart("bar", 'Park Ranking by Nationality', labels=[item[0] for item in data],
                           vals=[item[1] for item in data])
 
+    def b_submenu_d(self):
+        branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
+        months, avg_rating = zip(*self.branches[branch].get_avg_popularity_by_month())
+
+        Visual.show_chart('bar', f'Most Popular Month by Park ({self.branches[branch].get_name()})',
+                          labels=list(months), vals=list(avg_rating))
+
     def b_submenu(self):
         options = Process.create_options([
             'Most Reviewed Parks',
@@ -158,7 +165,7 @@ class Controller:
             'A': lambda: self.b_submenu_a(),
             'B': lambda: self.b_submenu_b(),
             'C': lambda: self.b_submenu_c(),
-            'D': lambda: print(4)
+            'D': lambda: self.b_submenu_d()
         }
 
         while True:

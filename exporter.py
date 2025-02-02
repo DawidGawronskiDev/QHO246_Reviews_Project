@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 import matplotlib.pyplot as plt
 
 
@@ -83,10 +83,11 @@ class Branch:
     def get_name(self):
         return self.branch.replace('_', ' ')
 
-    def get_popularity_by_month(self) -> List[tuple]:
+    def get_avg_popularity_by_month(self) -> List[Tuple[str, float]]:
         months_tuple = ('January', 'February', 'March', 'April', 'May', 'June',
                         'July', 'August', 'September', 'October', 'November', 'December')
-        months = {}
+
+        monthly_ratings = {month: {'sum': 0, 'count': 0} for month in months_tuple}
 
         for review in self.reviews:
             date = review.year_month
@@ -94,22 +95,20 @@ class Branch:
             if date == 'missing':
                 continue
 
-            month = int(date.split('-')[1])
+            month_index = int(date.split('-')[1]) - 1
+            month_name = months_tuple[month_index]
 
-            month_name = months_tuple[month - 1]
+            monthly_ratings[month_name]['sum'] += review.rating
+            monthly_ratings[month_name]['count'] += 1
 
-            if month_name not in months:
-                months[month_name] = 1
-            else:
-                months[month_name] += 1
+        avg_ratings = {
+            month: round(data['sum'] / data['count'], 1) if data['count'] > 0 else 0
+            for month, data in monthly_ratings.items()
+        }
 
-        for month_name in months_tuple:
-            if month_name not in months:
-                months[month_name] = 0
+        sorted_avg_ratings = [(month, avg_ratings[month]) for month in months_tuple]
 
-        sorted_months = sorted(months.items(), key=lambda x: months_tuple.index(x[0]))
-
-        return sorted_months
+        return sorted_avg_ratings
 
 
 class Chart:
