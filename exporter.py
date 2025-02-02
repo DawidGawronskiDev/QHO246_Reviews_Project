@@ -83,6 +83,34 @@ class Branch:
     def get_name(self):
         return self.branch.replace('_', ' ')
 
+    def get_popularity_by_month(self) -> List[tuple]:
+        months_tuple = ('January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December')
+        months = {}
+
+        for review in self.reviews:
+            date = review.year_month
+
+            if date == 'missing':
+                continue
+
+            month = int(date.split('-')[1])
+
+            month_name = months_tuple[month - 1]
+
+            if month_name not in months:
+                months[month_name] = 1
+            else:
+                months[month_name] += 1
+
+        for month_name in months_tuple:
+            if month_name not in months:
+                months[month_name] = 0
+
+        sorted_months = sorted(months.items(), key=lambda x: months_tuple.index(x[0]))
+
+        return sorted_months
+
 
 class Chart:
     def __init__(self, title: str, labels: List[str], vals: List[int], legend: List[str] = None) -> None:
