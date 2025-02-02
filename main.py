@@ -14,6 +14,9 @@ from process import Process
 from visual import Visual
 from tui import TUI
 
+import csv
+import json
+
 
 class Controller:
     def __init__(self):
@@ -33,13 +36,15 @@ class Controller:
     def main_menu(self):
         options = Process.create_options([
             'View Data',
-            'Visualise Data'
+            'Visualise Data',
+            'Export Data'
         ])
         options['X'] = 'Exit'
 
         actions = {
             'A': lambda: self.a_submenu(),
             'B': lambda: self.b_submenu(),
+            'C': lambda: self.c_submenu(),
             'X': lambda: exit()
         }
 
@@ -182,6 +187,45 @@ class Controller:
                         break
                 else:
                     print('Input does not correspond with any option!')
+
+    def c_submenu(self):
+        options = Process.create_options([
+            'TXT',
+            'CSV',
+            'JSON'
+        ])
+        options['X'] = 'Go Back'
+
+        actions = {
+            'A': lambda: self.export_data('TXT'),
+            'B': lambda: self.export_data('CSV'),
+            'C': lambda: self.export_data('JSON'),
+            'X': lambda: None
+        }
+
+        while True:
+            TUI.print_message('Please select an export format:')
+            TUI.print_options(options, 2)
+            choice = TUI.handle_input()
+
+            if choice:
+                choice = choice.upper()
+                if choice in actions:
+                    TUI.print_confirmed_option((choice, options[choice]))
+                    actions[choice]()
+                    break
+                else:
+                    print('Input does not correspond with any option!')
+
+    def export_data(self, format_type: str):
+        if format_type == 'TXT':
+            pass
+        elif format_type == 'CSV':
+            pass
+        elif format_type == 'JSON':
+            pass
+        else:
+            print('Invalid format selected!')
 
 
 if __name__ == '__main__':
