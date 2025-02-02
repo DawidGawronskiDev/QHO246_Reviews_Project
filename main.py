@@ -26,14 +26,11 @@ class Controller:
     def start(self):
         TUI.print_title()
         self.branches = Process.read_reviews('data/disneyland_reviews.csv')
-
         print(f'There are {Process.count_reviews(self.branches)} reviews.')
-
         while True:
             self.main_menu()
 
     def main_menu(self):
-        message = 'Please enter the letter which corresponds with your desired menu choice:'
         options = Process.create_options([
             'View Data',
             'Visualise Data'
@@ -47,7 +44,7 @@ class Controller:
         }
 
         while True:
-            TUI.print_message(message)
+            TUI.print_message('Please enter the letter which corresponds with your desired menu choice:')
             TUI.print_options(options, 1)
             choice = TUI.handle_input()
 
@@ -62,7 +59,6 @@ class Controller:
                     print('Input does not correspond with any option!')
 
     def a_submenu(self):
-        message = 'Please enter one of the following options:'
         options = Process.create_options([
             'View Reviews by Park',
             'Number of Reviews by Park and Reviewer Location',
@@ -78,7 +74,7 @@ class Controller:
         }
 
         while True:
-            TUI.print_message(message)
+            TUI.print_message('Please enter one of the following options:')
             TUI.print_options(options, 2)
             choice = TUI.handle_input()
 
@@ -133,27 +129,24 @@ class Controller:
 
     def b_submenu_a(self):
         data = Process.get_branches_reviews_count(self.branches)
-        branches = [self.branches[branch].get_name() for branch in list(data.keys())]
         reviews_count = list(data.values())
         Visual.show_chart("pie", 'Most Reviewed Parks', labels=reviews_count, vals=reviews_count,
-                          legend=branches)
+                          legend=[self.branches[branch].get_name() for branch in list(data.keys())])
 
     def b_submenu_b(self):
         data = Process.get_avg_branches_rating(self.branches)
-        branches = [self.branches[branch].get_name() for branch in list(data.keys())]
-        avg_reviews = list(data.values())
-        Visual.show_chart("bar", 'Average Scores', labels=branches, vals=avg_reviews)
+        Visual.show_chart("bar", 'Average Scores',
+                          labels=[self.branches[branch].get_name() for branch in list(data.keys())],
+                          vals=list(data.values()))
 
     def b_submenu_c(self):
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
         data = self.branches[branch].get_top_locations(10)
-        locations = [item[0] for item in data]
-        average_ratings = [item[1] for item in data]
 
-        Visual.show_chart("bar", 'Park Ranking by Nationality', labels=locations, vals=average_ratings)
+        Visual.show_chart("bar", 'Park Ranking by Nationality', labels=[item[0] for item in data],
+                          vals=[item[1] for item in data])
 
     def b_submenu(self):
-        message = 'Please enter one of the following options:'
         options = Process.create_options([
             'Most Reviewed Parks',
             'Average Scores',
@@ -169,7 +162,7 @@ class Controller:
         }
 
         while True:
-            TUI.print_message(message)
+            TUI.print_message('Please enter one of the following options:')
             TUI.print_options(options, 2)
             choice = TUI.handle_input()
 
