@@ -5,6 +5,7 @@ It is likely that most sections will require functions to be placed in this modu
 """
 
 import csv
+import json
 from exporter import Branch, Review
 from typing import List, Dict
 
@@ -86,3 +87,42 @@ class Process:
     @staticmethod
     def get_avg_branches_rating(branches: Dict[str, Branch]):
         return {k: v.avg_rating for k, v in branches.items()}
+
+    @staticmethod
+    def export_data(branches, format_type: str):
+        filename = f'exported_data.{format_type.lower()}'
+
+        if format_type == 'TXT':
+            with open(filename, 'w', encoding='utf-8') as f:
+                for branch_name, branch in branches.items():
+                    f.write(f'Branch: {branch_name}\n')
+                    for review in branch.reviews:
+                        f.write(
+                            f'{review.review_id}, {review.rating}, {review.year_month}, {review.reviewer_location}\n')
+                    f.write('\n')
+            print(f'Data exported successfully to {filename}.')
+        elif format_type == 'CSV':
+            with open(filename, 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerow(['Branch', 'Review ID', 'Rating', 'Year-Month', 'Reviewer Location'])
+                for branch_name, branch in branches.items():
+                    for review in branch.reviews:
+                        writer.writerow(
+                            [branch_name, review.review_id, review.rating, review.year_month, review.reviewer_location])
+            print(f'Data exported successfully to {filename}')
+        elif format_type == 'JSON':
+            data = {
+                branch_name: [
+                    {
+                        "Review ID": review.review_id,
+                        "Rating": review.rating,
+                        "Year-Month": review.year_month,
+                        "Reviewer Location": review.reviewer_location
+                    } for review in branch.reviews
+                ] for branch_name, branch in branches.items()
+            }
+            with open(filename, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4)
+            print(f'Data exported successfully to {filename}')
+        else:
+            print('Invalid format selected!')

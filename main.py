@@ -14,9 +14,6 @@ from process import Process
 from visual import Visual
 from tui import TUI
 
-import csv
-import json
-
 
 class Controller:
     def __init__(self):
@@ -197,9 +194,9 @@ class Controller:
         options['X'] = 'Go Back'
 
         actions = {
-            'A': lambda: self.export_data('TXT'),
-            'B': lambda: self.export_data('CSV'),
-            'C': lambda: self.export_data('JSON'),
+            'A': lambda: Process.export_data(self.branches, 'TXT'),
+            'B': lambda: Process.export_data(self.branches, 'CSV'),
+            'C': lambda: Process.export_data(self.branches, 'JSON'),
             'X': lambda: None
         }
 
@@ -216,16 +213,6 @@ class Controller:
                     break
                 else:
                     print('Input does not correspond with any option!')
-
-    def export_data(self, format_type: str):
-        if format_type == 'TXT':
-            pass
-        elif format_type == 'CSV':
-            pass
-        elif format_type == 'JSON':
-            pass
-        else:
-            print('Invalid format selected!')
 
 
 if __name__ == '__main__':
