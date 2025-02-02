@@ -11,7 +11,7 @@ Functions:
 - Format outputs appropriately.
 """
 
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Tuple
 from exporter import Review, Branch, Table
 from process import Process
 
