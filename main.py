@@ -67,12 +67,14 @@ class Controller:
             'Average Score per year by Park',
             'Average Score per Park by Reviewer Location'
         ])
+        options['X'] = 'Go Back'
 
         actions = {
             'A': lambda: self.a_submenu_a(),
             'B': lambda: self.a_submenu_b(),
             'C': lambda: self.a_submenu_c(),
-            'D': lambda: self.a_submenu_d()
+            'D': lambda: self.a_submenu_d(),
+            'X': lambda: None
         }
 
         while True:
@@ -162,12 +164,14 @@ class Controller:
             'Park Ranking by Nationality',
             'Most Popular Month by Park'
         ])
+        options['X'] = 'Go Back'
 
         actions = {
             'A': lambda: self.b_submenu_a(),
             'B': lambda: self.b_submenu_b(),
             'C': lambda: self.b_submenu_c(),
-            'D': lambda: self.b_submenu_d()
+            'D': lambda: self.b_submenu_d(),
+            'X': lambda: None
         }
 
         while True:
