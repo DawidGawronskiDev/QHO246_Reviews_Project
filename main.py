@@ -96,7 +96,7 @@ class Controller:
         branch = TUI.validate_branch(
             'For which branch would you like to see reviews?',
             list(self.branches.keys()))
-        TUI.print_reviews(list(self.branches[branch].get_reviews()))
+        TUI.print_reviews(self.branches[branch].reviews)
 
     def a_submenu_b(self):
         branch = TUI.validate_branch(

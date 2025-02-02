@@ -7,7 +7,7 @@ Any errors or invalid inputs should be handled appropriately.
 Please note that you do not need to read the data file or perform any other such processing in this module.
 """
 
-from exporter import Review, Branch
+from exporter import Review, Branch, Table
 from process import Process
 from typing import Dict, List
 
@@ -57,8 +57,11 @@ class TUI:
 
     @staticmethod
     def print_reviews(reviews: List[Review]) -> None:
-        for review in reviews:
-            print(review)
+        print(
+            Table(list(vars(reviews[0]).keys()),
+                  [list(vars(review).values()) for review in reviews],
+                  [16, 8, 16, 32])
+        )
 
     @staticmethod
     def print_reviews_count(branch: str, loc: str, reviews: List[Review]) -> None:
