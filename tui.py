@@ -91,9 +91,9 @@ class TUI:
             choice = TUI.handle_input()
 
             if choice:
-                if choice in options:
-                    TUI.print_confirmed_option(choice)
-                    break
+                for option in options:
+                    if Process.trans_str(choice) == Process.trans_str(option):
+                        TUI.print_confirmed_option(option)
+                        return option
                 else:
                     print('Input does not correspond with any option!')
-        return choice
