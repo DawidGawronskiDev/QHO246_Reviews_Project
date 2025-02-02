@@ -122,3 +122,58 @@ class Bar(Chart):
             self.ax.legend(self.legend)
 
         self.show()
+
+
+class Table:
+    def __init__(self, headers: List[str], rows: List[List[str]], lengths: List[int]) -> None:
+        """
+        Initializes a table for formatted display.
+
+        Args:
+            headers (List[str]): The headers of the table.
+            rows (List[List[str]]): The rows of data to be displayed.
+            lengths (List[int]): The widths of each column.
+        """
+        self.headers = headers
+        self.rows = rows
+        self.lengths = lengths
+
+    def __str__(self) -> str:
+        """
+        Returns a string representation of the table with borders and formatted rows.
+        """
+        header = self.create_row(self.headers)
+        border = '#' * len(header)
+        rows_str = '\n'.join(self.create_row(row) for row in self.rows)
+
+        return f"{border}\n{header}\n{border}\n{rows_str}\n{border}"
+
+    def create_row(self, items: List[str]) -> str:
+        """
+        Creates a formatted row with the specified column widths.
+
+        Args:
+            items (List[str]): A list of items to be formatted into a row.
+
+        Returns:
+            str: The formatted row as a string.
+        """
+        formatted_columns = [str(column).ljust(length) for column, length in zip(items, self.lengths)]
+        return f"# {' # '.join(formatted_columns)} #"
+
+    def print_header(self) -> None:
+        """
+        Prints the header of the table to the console.
+        """
+        header = self.create_row(self.headers)
+        border = '#' * len(header)
+        print(f"{border}\n{header}\n{border}")
+
+    def print_row(self, items: List[str]) -> None:
+        """
+        Prints a row of data to the console.
+
+        Args:
+            items (List[str]): A list of items to be printed as a row.
+        """
+        print(self.create_row(items))
