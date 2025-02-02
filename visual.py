@@ -24,7 +24,7 @@ class Visual:
         pass
 
     @staticmethod
-    def show_chart(chart_type: str, title: str, labels: List[Union[str, int]], vals: List[int],
+    def show_chart(chart_type: str, title: str, labels: List[Union[str, int]], vals: List[int | float],
                    legend: List[str] = None) -> None:
         """
         Creates and displays a chart of the specified type.
