@@ -36,7 +36,7 @@ class Process:
     def count_reviews(branches):
         count = 0
         for branch in branches.values():
-            count += branch.get_review_count()
+            count += branch.review_count
         return count
 
     @staticmethod
@@ -81,8 +81,8 @@ class Process:
 
     @staticmethod
     def get_branches_reviews_count(branches: Dict[str, Branch]) -> Dict[str, int]:
-        return {k: v.get_review_count() for k, v in branches.items()}
+        return {k: v.review_count for k, v in branches.items()}
 
     @staticmethod
     def get_avg_branches_rating(branches: Dict[str, Branch]):
-        return {k: v.get_avg_rating() for k, v in branches.items()}
+        return {k: v.avg_rating for k, v in branches.items()}

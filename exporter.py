@@ -26,7 +26,8 @@ class Branch:
     def get_reviews(self) -> List[Review]:
         return list(self.reviews)
 
-    def get_locations(self) -> List[str]:
+    @property
+    def locations(self) -> List[str]:
         locations = []
         for review in self.reviews:
             if review.reviewer_location not in locations:
@@ -41,13 +42,15 @@ class Branch:
                 years.append(year)
         return sorted(years)
 
-    def get_avg_rating(self) -> float:
+    @property
+    def avg_rating(self) -> float:
         if len(self.reviews) <= 0:
             return 0
         return round(sum([review.rating for review in self.reviews]) / len(self.reviews), 1)
 
-    def get_avg_rating_by_loc(self):
-        avg_ratings = {location: {'sum': 0, 'count': 0} for location in self.get_locations()}
+    @property
+    def avg_rating_by_loc(self):
+        avg_ratings = {location: {'sum': 0, 'count': 0} for location in self.locations}
 
         for review in self.reviews:
             loc = review.reviewer_location
@@ -57,10 +60,12 @@ class Branch:
 
         return {k: round(v['sum'] / v['count'], 1) if v['count'] > 0 else 0 for k, v in avg_ratings.items()}
 
-    def get_review_count(self):
+    @property
+    def review_count(self):
         return len(self.reviews)
 
-    def get_top_locations(self, limit: int = None):
+    @property
+    def top_locations(self):
         locations = {}
         for review in self.reviews:
             loc = review.reviewer_location
@@ -75,15 +80,13 @@ class Branch:
 
         sorted_locations = sorted(locations_averages.items(), key=lambda i: i[1], reverse=True)
 
-        if limit:
-            return sorted_locations[:limit]
-        else:
-            return sorted_locations
+        return sorted_locations[:10]
 
     def get_name(self):
         return self.branch.replace('_', ' ')
 
-    def get_avg_popularity_by_month(self) -> List[Tuple[str, float]]:
+    @property
+    def avg_popularity_by_month(self) -> List[Tuple[str, float]]:
         months_tuple = ('January', 'February', 'March', 'April', 'May', 'June',
                         'July', 'August', 'September', 'October', 'November', 'December')
 

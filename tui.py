@@ -89,7 +89,7 @@ class TUI:
     @staticmethod
     def print_avg_score_by_loc(branches: Dict[str, Branch]):
         print(Table(['Park', 'Reviewer Location', 'Average Rating'],
-                    [[k, *rating] for k, v in branches.items() for rating in v.get_avg_rating_by_loc().items()],
+                    [[k, *rating] for k, v in branches.items() for rating in v.avg_rating_by_loc.items()],
                     [32, 48, 16]))
 
     @staticmethod

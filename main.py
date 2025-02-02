@@ -102,7 +102,7 @@ class Controller:
 
         location = TUI.validate_multi_choice(
             'For which reviewer location would you like to see number of reviews?',
-            self.branches[branch].get_locations()
+            self.branches[branch].locations
         )
 
         TUI.print_reviews_count(
@@ -122,7 +122,7 @@ class Controller:
 
         TUI.print_message(
             f'The average rating for {self.branches[branch].get_name()} branch in year {year} is {
-            self.branches[branch].get_avg_rating()}')
+            self.branches[branch].avg_rating}')
 
     def a_submenu_d(self):
         TUI.print_avg_score_by_loc(self.branches)
@@ -141,14 +141,14 @@ class Controller:
 
     def b_submenu_c(self):
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
-        data = self.branches[branch].get_top_locations(10)
+        data = self.branches[branch].top_locations
 
         Visual.show_chart("bar", 'Park Ranking by Nationality', labels=[item[0] for item in data],
                           vals=[item[1] for item in data])
 
     def b_submenu_d(self):
         branch = TUI.validate_branch('Please enter one of the following options:', self.branches)
-        months, avg_rating = zip(*self.branches[branch].get_avg_popularity_by_month())
+        months, avg_rating = zip(*self.branches[branch].avg_popularity_by_month)
 
         Visual.show_chart('bar', f'Most Popular Month by Park ({self.branches[branch].get_name()})',
                           labels=list(months), vals=list(avg_rating))
