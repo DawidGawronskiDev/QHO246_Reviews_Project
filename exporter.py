@@ -204,3 +204,78 @@ class Table:
     def print_row(self, items: List[str]) -> None:
         """Prints a single row of data."""
         print(self.create_row(items))
+
+
+import csv
+import json
+
+
+class DataExporter:
+    """
+    A class to handle exporting review data from multiple branches into different file formats.
+
+    Supported formats:
+    - TXT
+    - CSV
+    - JSON
+    """
+
+    def __init__(self, branches: Dict[str, Branch]):
+        """
+        Initializes the DataExporter with branch data.
+
+        :param branches: Dictionary where keys are branch names and values are objects containing review data.
+        """
+        self.branches = branches
+        self.filename = 'exported_data'
+
+    def export_txt(self) -> None:
+        """
+        Exports branch review data to a TXT file.
+        """
+        with open(f'{self.filename}.txt', 'w', encoding='utf-8') as f:
+            for branch_name, branch in self.branches.items():
+                f.write(f'Branch: {branch_name}\n')
+                for review in branch.reviews:
+                    f.write(f'{review.review_id}, {review.rating}, {review.year_month}, {review.reviewer_location}\n')
+                f.write('\n')
+        self.confirm_export('TXT')
+
+    def export_csv(self) -> None:
+        """
+        Exports branch review data to a CSV file.
+        """
+        with open(f'{self.filename}.csv', 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Branch', 'Review ID', 'Rating', 'Year-Month', 'Reviewer Location'])
+            for branch_name, branch in self.branches.items():
+                for review in branch.reviews:
+                    writer.writerow(
+                        [branch_name, review.review_id, review.rating, review.year_month, review.reviewer_location])
+        self.confirm_export('CSV')
+
+    def export_json(self) -> None:
+        """
+        Exports branch review data to a JSON file.
+        """
+        data = {
+            branch_name: [
+                {
+                    "Review ID": review.review_id,
+                    "Rating": review.rating,
+                    "Year-Month": review.year_month,
+                    "Reviewer Location": review.reviewer_location
+                } for review in branch.reviews
+            ] for branch_name, branch in self.branches.items()
+        }
+        with open(f'{self.filename}.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+        self.confirm_export('JSON')
+
+    def confirm_export(self, file_format: str) -> None:
+        """
+        Confirms successful data export.
+
+        :param file_format: The format of the exported file (TXT, CSV, or JSON).
+        """
+        print(f'Data exported successfully to {self.filename} ({file_format} format).')

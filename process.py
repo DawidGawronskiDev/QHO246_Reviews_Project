@@ -11,7 +11,6 @@ Functions:
 """
 
 import csv
-import json
 from typing import List, Dict, Union
 from exporter import Branch, Review
 
@@ -153,55 +152,3 @@ class Process:
             Dict[str, float]: A dictionary where keys are branch names and values are average ratings.
         """
         return {branch_name: branch.avg_rating for branch_name, branch in branches.items()}
-
-    @staticmethod
-    def export_data(branches: Dict[str, Branch], format_type: str) -> None:
-        """
-        Exports review data to a file in TXT, CSV, or JSON format.
-
-        Args:
-            branches (Dict[str, Branch]): A dictionary of Branch objects containing review data.
-            format_type (str): The format for exporting the data (TXT, CSV, JSON).
-
-        Raises:
-            ValueError: If an invalid format is specified.
-        """
-        filename = f'exported_data.{format_type.lower()}'
-
-        if format_type.upper() == 'TXT':
-            with open(filename, 'w', encoding='utf-8') as f:
-                for branch_name, branch in branches.items():
-                    f.write(f'Branch: {branch_name}\n')
-                    for review in branch.reviews:
-                        f.write(
-                            f'{review.review_id}, {review.rating}, {review.year_month}, {review.reviewer_location}\n')
-                    f.write('\n')
-            print(f'Data exported successfully to {filename} (TXT format).')
-
-        elif format_type.upper() == 'CSV':
-            with open(filename, 'w', newline='', encoding='utf-8') as f:
-                writer = csv.writer(f)
-                writer.writerow(['Branch', 'Review ID', 'Rating', 'Year-Month', 'Reviewer Location'])
-                for branch_name, branch in branches.items():
-                    for review in branch.reviews:
-                        writer.writerow(
-                            [branch_name, review.review_id, review.rating, review.year_month, review.reviewer_location])
-            print(f'Data exported successfully to {filename} (CSV format).')
-
-        elif format_type.upper() == 'JSON':
-            data = {
-                branch_name: [
-                    {
-                        "Review ID": review.review_id,
-                        "Rating": review.rating,
-                        "Year-Month": review.year_month,
-                        "Reviewer Location": review.reviewer_location
-                    } for review in branch.reviews
-                ] for branch_name, branch in branches.items()
-            }
-            with open(filename, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=4)
-            print(f'Data exported successfully to {filename} (JSON format).')
-
-        else:
-            raise ValueError(f"Invalid format '{format_type}'. Supported formats: TXT, CSV, JSON.")
