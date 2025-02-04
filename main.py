@@ -7,7 +7,7 @@ and program behavior. It utilizes the other modules to:
 """
 
 from typing import Dict, List
-from exporter import Review, Branch
+from exporter import Review, Branch, DataExporter
 from process import Process
 from visual import Visual
 from tui import TUI
@@ -220,9 +220,9 @@ class Controller:
         options['X'] = 'Go Back'
 
         actions = {
-            'A': lambda: Process.export_data(self.branches, 'TXT'),
-            'B': lambda: Process.export_data(self.branches, 'CSV'),
-            'C': lambda: Process.export_data(self.branches, 'JSON'),
+            'A': lambda: DataExporter(self.branches).export_txt(),
+            'B': lambda: DataExporter(self.branches).export_csv(),
+            'C': lambda: DataExporter(self.branches).export_json(),
             'X': lambda: None
         }
 
