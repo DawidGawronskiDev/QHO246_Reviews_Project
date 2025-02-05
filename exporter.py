@@ -1,6 +1,7 @@
 from typing import List, Tuple, Dict
 import matplotlib.pyplot as plt
-
+import csv
+import json
 
 class Review:
     """
@@ -204,11 +205,6 @@ class Table:
     def print_row(self, items: List[str]) -> None:
         """Prints a single row of data."""
         print(self.create_row(items))
-
-
-import csv
-import json
-
 
 class DataExporter:
     """
